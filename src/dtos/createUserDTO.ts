@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength, IsDateString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, IsDateString, Matches } from 'class-validator';
 
 export class CreateUserDTO {
   @IsString()
@@ -6,15 +6,21 @@ export class CreateUserDTO {
   name?: string;
 
   @IsEmail({}, { message: 'Email inválido' })
-  @IsOptional()
+  @IsNotEmpty({ message: 'O email é obrigatório' })
   email?: string;
 
   @IsString()
   @MinLength(6, { message: 'A senha deve ter no mínimo 6 caracteres' })
-  @IsOptional()
+  @IsNotEmpty({ message: 'A senha é obrigatória' })
+  @Matches(/[A-Z]/, { message: 'A senha deve conter pelo menos uma letra maiúscula' })
+  @Matches(/[a-z]/, { message: 'A senha deve conter pelo menos uma letra minúscula' })
+  @Matches(/[0-9]/, { message: 'A senha deve conter pelo menos um número' })
+  @Matches(/[\W_]/, { message: 'A senha deve conter pelo menos um caractere especial' })
   password?: string;
 
-  @IsDateString({}, { message: 'Data de nascimento inválida' })
-  @IsOptional()
-  birthDate?: string; 
+  @Matches(/^\d{2}-\d{2}-\d{4}$/, {
+    message: 'A data de nascimento deve estar no formato DD-MM-AAAA',
+  })
+  @IsNotEmpty({ message: 'A data de nascimento é obrigatória' })
+  birthDate?: string;
 }
