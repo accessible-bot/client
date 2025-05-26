@@ -89,10 +89,10 @@ const Cadastro = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <div className="top-bar">
+        <div className="top-bar1">
           <img src="AutBot_Logo.png" alt="Logo" />
-          <button className="botao-inicio">AutBot</button>
-          <button className="botao-sobre">Sobre</button>
+          <button className="botao-inicio1">AutBot</button>
+          <button className="botao-sobre1">Sobre</button>
         </div>
 
         <div className="main-cadastro">
@@ -157,6 +157,17 @@ const Cadastro = () => {
                   max={today}
                   onChange={(e) => setBirthDate(e.target.value)}
                 />
+              </div>
+              <div className="textfield">
+                <label htmlFor="cadastrante">Cadastrante</label>
+                <select name="cadastrante">
+                  <option value="" disabled ></option>
+                  <option value="professor">Professor</option>
+                  <option value="cuidador">Cuidador</option>
+                  <option value="usuario">Usuário</option>
+                </select>
+
+
               </div>
 
               <button className="botao-cadastro">Continuar</button>
