@@ -6,6 +6,7 @@
   height: 100vh;
   width: 100vw;
   font-family: "Varela Round", sans-serif;
+  padding-top: 90px;
   background-color: #ffffff;
 }
 
@@ -19,13 +20,25 @@
   z-index: 1000;
   display: flex;
   align-items: center;
-  padding-left: 70px;
+  padding: 0 70px;
 }
 
-.top-bar img {
-  width: 3%;
+.top-bar-logo {
+  height: 50px;
+  width: auto;
+  margin-right: 15px;
+}
+
+.top-bar-links {
+  margin-left: auto; 
+  display: flex;
+  align-items: center;
+}
+
+.top-bar .botao-inicio {
   margin-left: 0;
 }
+
 
 .botao-inicio,
 .botao-sobre,
@@ -43,12 +56,15 @@
 
 
 .sidebar {
-  width: 25vh;
+  width: 280px;
   background-color: #e0e0e0;
   display: flex;
-  flex-direction: row;
-  align-items: first baseline;
-  padding-top: 10px;
+  flex-direction: column;
+  align-items: center; 
+  padding: 20px 10px;
+  height: calc(100vh - 90px);
+  overflow-y: auto; 
+  flex-shrink: 0;
 }
 
 .logo-section {
@@ -63,9 +79,47 @@
 }
 
 .icon-section {
-  margin-top: 100px;
-  padding-left: 105px;
-  
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px; 
+  width: 100%;
+  justify-content: center;
+}
+
+.icon-section .send-button {
+  font-size: 22px;
+}
+
+.conversations-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.conversation-item {
+  padding: 10px 15px;
+  background-color: #f7f7f7;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid #dcdcdc;
+  transition: background-color 0.2s ease;
+}
+
+.conversation-item:hover {
+  background-color: #e9e9e9;
+}
+
+.no-conversations-message {
+  text-align: center;
+  color: #777;
+  font-size: 0.9rem;
+  padding: 20px 0;
 }
 
 
@@ -83,6 +137,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 40px;
+  flex-shrink: 0;
   
 }
 
@@ -131,10 +186,14 @@ input, textarea {
   font-family: "Poppins", sans-serif;
 }
 
-.send-button {
+.chat-input-container .send-button {
   border: none;
   background: transparent;
   cursor: pointer;
   color: #181d54;
   font-size: 18px;
+  font-size: 20px;
+  padding: 0 15px; 
+  display: flex; 
+  align-items: center;
 }

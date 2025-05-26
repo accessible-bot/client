@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 
+
 const Login = () => {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +23,7 @@ const Login = () => {
       if (response.status === 200) {
         const { token } = response.data;
         localStorage.setItem("authToken", token);
-        navigate("/home");
+        navigate("/chat");
       } else {
         setError("Credenciais inválidas.");
       }

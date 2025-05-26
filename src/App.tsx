@@ -3,6 +3,7 @@ import Login from './pages/login/Login';
 import Cadastro from './pages/register/Cadastro';
 import Home from './pages/home/Home';
 import PrivateRoute from './components/PrivateRoute';
+import Chat from './pages/chat/Chat';
 
 function NotFound() {
   return (
@@ -29,6 +30,9 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/chat" element={
+          <PrivateRoute> <Chat /></PrivateRoute>
+        } />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

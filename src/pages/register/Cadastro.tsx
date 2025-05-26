@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
-import axios from "axios"; 
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Cadastro.css";
 
 const Cadastro = () => {
@@ -10,6 +10,7 @@ const Cadastro = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [userType, setUserType] = useState("");
 
   const [userNameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -49,42 +50,44 @@ const Cadastro = () => {
     }
   };
 
- const handleSubmit = async (event: { preventDefault: () => void }) => {
-  event.preventDefault();
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
 
-  if (!userNameError && !emailError && !passwordError) {
-    try {
-      const [year, month, day] = birthDate.split("-");
-      const formattedBirthDate = `${day}-${month}-${year}`;
+    if (!userNameError && !emailError && !passwordError) {
+      try {
+        const [year, month, day] = birthDate.split("-");
+        const formattedBirthDate = `${day}-${month}-${year}`;
 
-      const requestData = {
-        email,
-        password,
-        name: userName,
-        birthDate: formattedBirthDate,
-      };
+        const requestData = {
+          email,
+          password,
+          name: userName,
+          birthDate: formattedBirthDate,
+          userType,
+        };
 
-      const response = await axios.post("http://localhost:3000/api/users", requestData);
+        const response = await axios.post(
+          "http://localhost:3000/api/users",
+          requestData
+        );
 
-      const data = response.data;
+        const data = response.data;
 
-      alert(data.mensagem || "Cadastro realizado com sucesso!");
-      navigate("/");
-      
-    } catch (error: any) {
-      console.error("Erro ao cadastrar:", error);
+        alert(data.mensagem || "Cadastro realizado com sucesso!");
+        navigate("/");
+      } catch (error: any) {
+        console.error("Erro ao cadastrar:", error);
 
-      if (error.response?.data?.mensagem) {
-        alert(error.response.data.mensagem);
-      } else {
-        alert("Erro ao conectar com o servidor.");
+        if (error.response?.data?.mensagem) {
+          alert(error.response.data.mensagem);
+        } else {
+          alert("Erro ao conectar com o servidor.");
+        }
       }
+    } else {
+      console.log("Preencha os campos solicitados corretamente!");
     }
-  } else {
-    console.log("Preencha os campos solicitados corretamente!");
-  }
-};
-
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -130,9 +133,7 @@ const Cadastro = () => {
                   placeholder="E-mail"
                   onChange={(e) => handleEmailChange(e.target.value)}
                 />
-                {emailError && (
-                  <p className="error-message">{emailError}</p>
-                )}
+                {emailError && <p className="error-message">{emailError}</p>}
               </div>
 
               <div className="textfield">
@@ -160,14 +161,19 @@ const Cadastro = () => {
               </div>
               <div className="textfield">
                 <label htmlFor="cadastrante">Cadastrante</label>
-                <select name="cadastrante">
-                  <option value="" disabled ></option>
-                  <option value="professor">Professor</option>
-                  <option value="cuidador">Cuidador</option>
-                  <option value="usuario">Usuário</option>
+                <select
+                  name="cadastrante"
+                  value={userType}
+                  onChange={(e) => setUserType(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>
+                    Selecione uma opção
+                  </option>
+                  <option value="Professor">Professor</option>
+                  <option value="Cuidador">Cuidador</option>
+                  <option value="Usuário">Usuário</option>
                 </select>
-
-
               </div>
 
               <button className="botao-cadastro">Continuar</button>
