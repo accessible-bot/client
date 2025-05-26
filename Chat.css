@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Varela+Round&display=swap');
+
+
+.chat-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Varela Round", sans-serif;
+  padding-top: 90px;
+  background-color: #ffffff;
+}
+
+.top-bar {
+  width: 100%;
+  height: 90px;
+  background-color: #b6d9ec;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 0 70px;
+}
+
+.top-bar-logo {
+  height: 50px;
+  width: auto;
+  margin-right: 15px;
+}
+
+.top-bar-links {
+  margin-left: auto; 
+  display: flex;
+  align-items: center;
+}
+
+.top-bar .botao-inicio {
+  margin-left: 0;
+}
+
+
+.botao-inicio,
+.botao-sobre,
+.botao-perfil {
+  font-size: 15px;
+  color: #181d54;
+  background: transparent;
+  border: none;
+  margin-left: 25px;
+  cursor: pointer;
+}
+.botao-sobre {
+    margin-left: 1300px;
+}
+
+
+.sidebar {
+  width: 280px;
+  background-color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding: 20px 10px;
+  height: calc(100vh - 90px);
+  overflow-y: auto; 
+  flex-shrink: 0;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-section img {
+  width: 40px;
+  height: 40px;
+}
+
+.icon-section {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px; 
+  width: 100%;
+  justify-content: center;
+}
+
+.icon-section .send-button {
+  font-size: 22px;
+}
+
+.conversations-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.conversation-item {
+  padding: 10px 15px;
+  background-color: #f7f7f7;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid #dcdcdc;
+  transition: background-color 0.2s ease;
+}
+
+.conversation-item:hover {
+  background-color: #e9e9e9;
+}
+
+.no-conversations-message {
+  text-align: center;
+  color: #777;
+  font-size: 0.9rem;
+  padding: 20px 0;
+}
+
+
+.main-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.chat-header {
+  background-color: #b6d9ec;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  flex-shrink: 0;
+  
+}
+
+
+
+.chat-body {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-card {
+  background-color: #a9e8dc;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  width: 70%;
+  max-width: 1300px;
+}
+
+.chat-card h2 {
+  margin-bottom: 20px;
+  color: #181d54;
+}
+
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 30px;
+  padding: 5px 15px;
+  box-shadow: 0 0 8px rgba(115, 110, 110, 0.1);
+}
+input, textarea {
+    background-color: #fff;
+    color: #2c3e50;
+}
+
+.chat-input-container input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+}
+
+.chat-input-container .send-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #181d54;
+  font-size: 18px;
+  font-size: 20px;
+  padding: 0 15px; 
+  display: flex; 
+  align-items: center;
+}
