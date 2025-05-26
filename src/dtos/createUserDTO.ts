@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength, IsDateString, Matches } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsString, MinLength, Matches } from 'class-validator';
+import { UserType } from './enums/UserType'; 
 
 export class CreateUserDTO {
   @IsString()
@@ -23,4 +24,8 @@ export class CreateUserDTO {
   })
   @IsNotEmpty({ message: 'A data de nascimento é obrigatória' })
   birthDate?: string;
+
+  @IsEnum(UserType, { message: 'Tipo de usuário inválido' })
+  @IsNotEmpty({ message: 'O tipo de usuário é obrigatório' })
+  userType?: UserType;
 }
