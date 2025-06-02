@@ -2,8 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/login/Login';
 import Cadastro from './pages/register/Cadastro';
 import Home from './pages/home/Home';
-import PrivateRoute from './components/PrivateRoute';
 import Chat from './pages/chat/Chat';
+import PrivateRoute from './components/PrivateRoute';
+//import HistoricoPage from './pages/HistoricoPage';
 
 function NotFound() {
   return (
@@ -21,6 +22,8 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/404" element={<NotFound />} />
+        <Route path="/chat" element={<Chat />} />"
+
 
         <Route
           path="/home"
@@ -30,9 +33,6 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/chat" element={
-          <PrivateRoute> <Chat /></PrivateRoute>
-        } />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
