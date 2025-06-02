@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 
-
 const Login = () => {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +22,7 @@ const Login = () => {
       if (response.status === 200) {
         const { token } = response.data;
         localStorage.setItem("authToken", token);
-        navigate("/chat");
+        navigate("/home");
       } else {
         setError("Credenciais inválidas.");
       }
@@ -65,7 +64,7 @@ const Login = () => {
 
               {error && <p className="error-message">{error}</p>}
 
-              <div className="textfield1">
+              <div className="textfield">
                 <label htmlFor="usuario">E-mail</label>
                 <input
                   type="text"
@@ -75,7 +74,7 @@ const Login = () => {
                 />
               </div>
 
-              <div className="textfield1">
+              <div className="textfield">
                 <label htmlFor="senha">Senha</label>
                 <input
                   type="password"
