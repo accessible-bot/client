@@ -1,0 +1,374 @@
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Varela+Round&display=swap');
+
+/* --- Global Styles & Resets --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Varela Round", sans-serif;
+    background: #ffffff;
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden; 
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* --- Top Bar Styles --- */
+.top-bar {
+    width: 100%;
+    height: 70px;
+    background-color: #b6d9ec;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    padding: 0 30px; 
+}
+
+.logo-title-container {
+    display: flex;
+    align-items: center;
+    margin-left: 5px; 
+    margin-right: auto; 
+}
+
+.top-bar-logo { 
+    line-height: 0; 
+}
+
+.top-bar-logo img { 
+    height: 40px; 
+    width: 40px;  
+   
+}
+
+.botao-inicio { 
+    font-size: 20px;
+    font-weight: 600;
+    color: #181d54;
+    background: transparent;
+    border: none;
+    margin-left: 10px; 
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.top-bar-links { 
+    display: flex;
+    align-items: center;
+    margin-left: auto; 
+}
+
+.botao-sobre {
+    font-size: 15px;
+    color: #181d54;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.botao-cadastre {
+    font-size: 15px;
+    color: #181d54;
+    background: transparent;
+    border: none;
+    margin-left: 25px; 
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+
+.main-login {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    padding-top: 100px; 
+    box-sizing: border-box;
+}
+
+.left-login, .right-login {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.left-login > h1 {
+    color: #181d54;
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.left-login-image { 
+    width: 90%;
+    max-width: 350px;
+    height: auto;
+    margin-top: 20px;
+}
+
+
+.card-login {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px 35px;
+    background: #b6d9ec;
+    border-radius: 15px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-login > h1 {
+    color: #181d54;
+    font-weight: 800;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+.error-message {
+    color: #c0392b;
+    background-color: #fdd;
+    border: 1px solid #c0392b;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.textfield {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.textfield > label {
+    color: #181d54;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.textfield > input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px 15px;
+    background: #f8f9fa;
+    color: #2c3e50;
+    font-size: 1em;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.textfield > input:focus {
+    border-color: #181d54;
+}
+
+.botao-login {
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    font-size: 1em;
+    color: #ffffff;
+    background: #181d54;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.botao-login:hover {
+    background: #2c337a;
+}
+
+.botao-esqueci-senha {
+    margin-top: 20px;
+    font-weight: 500;
+    border: none;
+    color: #181d54;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.9em;
+    text-decoration: none;
+}
+
+.botao-esqueci-senha:hover {
+    text-decoration: underline;
+}
+
+/* --- Tablet Responsiveness --- */
+@media (max-width: 768px) {
+    .top-bar {
+        padding: 0 20px;
+        height: 65px;
+    }
+
+    .top-bar-logo img { 
+        height: 40px;
+        width: 40px; 
+    }
+
+    .botao-inicio {
+        font-size: 18px;
+        margin-left: 8px; 
+    }
+
+    .botao-sobre, .botao-cadastre {
+        font-size: 14px;
+        margin-left: 15px; 
+    }
+    
+
+
+    .main-login {
+        flex-direction: column;
+        padding: 20px;
+        padding-top: 85px; 
+        min-height: calc(100vh - 65px);
+    }
+
+    .left-login {
+        width: 100%;
+        margin-bottom: 30px;
+        padding: 10px 0;
+    }
+
+    .right-login {
+        width: 100%;
+        padding: 0;
+    }
+
+    .left-login > h1 {
+        font-size: 1.8em;
+    }
+
+    .left-login-image {
+        max-width: 280px;
+        margin-top: 15px;
+    }
+
+    .card-login {
+        width: 90%;
+        max-width: 420px;
+        padding: 25px 30px;
+    }
+
+    .card-login > h1 {
+        font-size: 1.6em;
+    }
+
+    .textfield > input {
+        padding: 12px;
+        font-size: 0.95em;
+    }
+
+    .botao-login {
+        padding: 12px 0;
+        font-size: 0.95em;
+    }
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 480px) {
+    .top-bar {
+        padding: 0 15px;
+        height: 60px;
+    }
+
+    .top-bar-logo img { 
+        height: 30px;
+        width: 30px;
+    }
+
+    .botao-inicio {
+        font-size: 16px;
+        margin-left: 6px;
+    }
+
+    .botao-sobre, .botao-cadastre {
+        font-size: 12px;
+        margin-left: 10px;
+    }
+
+    .main-login {
+        padding: 15px;
+        padding-top: 75px; 
+        min-height: calc(100vh - 60px);
+    }
+
+    .left-login {
+        margin-bottom: 20px;
+        
+    }
+    
+    .left-login > h1 {
+        font-size: 1.5em;
+    }
+
+    .left-login-image {
+        max-width: 200px;
+        margin-top: 10px;
+       
+    }
+
+    .card-login {
+        width: 95%;
+        max-width: none;
+        padding: 20px 25px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-login > h1 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    .textfield {
+        margin-bottom: 15px;
+    }
+
+    .textfield > label {
+        font-size: 0.85em;
+        margin-bottom: 6px;
+    }
+
+    .textfield > input {
+        padding: 12px 14px;
+        font-size: 0.9em;
+    }
+
+    .botao-login {
+        padding: 14px 0;
+        font-size: 0.9em;
+        letter-spacing: 1px;
+    }
+
+    .botao-esqueci-senha {
+        font-size: 0.85em;
+        margin-top: 15px;
+    }
+}
