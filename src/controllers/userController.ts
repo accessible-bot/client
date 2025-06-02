@@ -1,14 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateUserDTO } from "../dtos/createUserDTO";
-import { User } from "../models/User";
+// import { User } from "../models/User";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { LoginDTO } from "../dtos/loginDTO";
 import bcrypt from "bcryptjs";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { UserType } from "../dtos/enums/UserType";
 
 dotenv.config();
+
+const prisma = new PrismaClient();
 
 export class UserController {
   static async login(
@@ -19,7 +23,7 @@ export class UserController {
     try {
       const data: LoginDTO = req.body;
 
-      const user = await User.findOne({ email: data.email });
+      const user = await prisma.user.findUnique({ where: { email: data.email } });
 
       if (!user) {
         res.status(404).json({ message: "Usuário não encontrado" });
@@ -56,7 +60,7 @@ export class UserController {
         return;
       }
 
-      const token = jwt.sign({ userId: user._id, email: user.email }, secret, {
+      const token = jwt.sign({ userId: user.id, email: user.email }, secret, {
         expiresIn,
       });
 
@@ -87,7 +91,7 @@ export class UserController {
         return;
       }
 
-      const existingUser = await User.findOne({ email: userDTO.email });
+      const existingUser = await prisma.user.findUnique({ where: { email: userDTO.email} });
       if (existingUser) {
         res.status(400).json({ message: "Email já cadastrado" });
         return;
@@ -95,16 +99,18 @@ export class UserController {
 
       const hashedPassword = await bcrypt.hash(userDTO.password!, 10);
 
-      const newUser = new User({
-        name: userDTO.name,
-        email: userDTO.email,
-        password: hashedPassword,
-        birthDate: userDTO.birthDate ? new Date(userDTO.birthDate) : undefined,
-        userType: userDTO.userType,
-        createdAt: new Date(),
-      });
+      const formattedBirthDate = new Date(userDTO.birthDate!.split('-').reverse().join('-'));
 
-      await newUser.save();
+      const newUser = await prisma.user.create({
+        data: {
+          name: userDTO.name!,
+          email: userDTO.email!,
+          password: hashedPassword,
+          birthDate: formattedBirthDate,
+          userType: userDTO.userType as UserType
+        },
+        
+      });
 
       res.status(201).json(newUser);
     } catch (error) {
@@ -114,7 +120,7 @@ export class UserController {
 
   static async getAll(req: Request, res: Response): Promise<void> {
     try {
-      const users = await User.find();
+      const users = await prisma.user.findMany();
       res.json(users);
     } catch (error) {
       res.status(500).json({ message: "Erro ao buscar usuários", error });
@@ -123,9 +129,10 @@ export class UserController {
 
   static async getUser(req: Request, res: Response): Promise<void> {
     try {
-      const id = req.params.id;
+      const userId = req.params.id;
 
-      const user = await User.findById(id);
+      const user = await prisma.user.findUnique({ where: {id: userId}}
+      );
 
       if (!user) {
         res.status(404).json({ message: "Usuário não encontrado" });
@@ -139,23 +146,26 @@ export class UserController {
 
   static async update(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
+      const { userId } = req.params;
       const { name, email, password } = req.body;
 
-      const user = await User.findById(id);
+      const user = await prisma.user.findUnique({where: {id: userId}});
 
       if (!user) {
         res.status(404).json({ message: "Usuário não encontrado" });
         return;
       }
 
-      if (name) user.name = name;
-      if (email) user.email = email;
-      if (password) user.password = password;
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: {
+          ...(name && { name }),
+          ...(email && { email }),
+          ...(password && { password }),
+        },
+    });
 
-      await user.save();
-
-      res.json(user);
+      res.json(updatedUser);
     } catch (error) {
       res.status(500).json({ message: "Erro ao atualizar usuário", error });
     }

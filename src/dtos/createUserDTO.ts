@@ -1,5 +1,6 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString, MinLength, Matches } from 'class-validator';
-import { UserType } from './enums/UserType'; 
+import { Prisma, PrismaClient } from "@prisma/client";
+import { UserType } from './enums/UserType';
 
 export class CreateUserDTO {
   @IsString()
@@ -26,6 +27,7 @@ export class CreateUserDTO {
   birthDate?: string;
 
   @IsEnum(UserType, { message: 'Tipo de usuário inválido' })
+
   @IsNotEmpty({ message: 'O tipo de usuário é obrigatório' })
   userType?: UserType;
 }
