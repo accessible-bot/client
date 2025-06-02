@@ -4,13 +4,18 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 enum UserType {
   PROFESSOR
   CUIDADOR
+  RESPONSAVEL
   USUARIO
+  TEA_NIVEL_1
+  TEA_NIVEL_2
+  TEA_NIVEL_3
 }
 
 model User {
@@ -22,6 +27,7 @@ model User {
   userType  UserType
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  historics Historic[]
 }
 
 enum Role {
@@ -31,8 +37,32 @@ enum Role {
 }
 
 model Message {
-  id        String  @id @default(uuid())
-  role      Role
-  content   String
-  createdAt DateTime @default(now())  
+  id          String      @id @default(uuid())
+  role        Role
+  content     String
+  createdAt   DateTime    @default(now()) 
+  historicId  String
+  historic    Historic    @relation(fields: [historicId], references: [historicId]) 
+}
+
+model Historic {
+  historicId  String    @id @default(uuid())
+  startedAt   DateTime  @default(now())
+  endedAt     DateTime 
+  messages    Message[]
+  terminated  Boolean
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model ChatCache {
+  id          String   @id @default(uuid())
+  userId      String
+  question    String
+  answer      String
+  publicKey   String
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+
+  @@index([userId, question])
 }

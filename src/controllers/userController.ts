@@ -1,18 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateUserDTO } from "../dtos/createUserDTO";
-// import { User } from "../models/User";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { UserType } from "@prisma/client";
+import prisma from "../prisma";
 import { LoginDTO } from "../dtos/loginDTO";
 import bcrypt from "bcryptjs";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { UserType } from "../dtos/enums/UserType";
 
 dotenv.config();
-
-const prisma = new PrismaClient();
 
 export class UserController {
   static async login(
@@ -66,7 +63,7 @@ export class UserController {
 
       res.json({
         message: "Login realizado com sucesso",
-        user: { name: user.name, email: user.email },
+        user: { id: user.id, name: user.name, email: user.email },
         token,
       });
     } catch (error) {
@@ -107,9 +104,9 @@ export class UserController {
           email: userDTO.email!,
           password: hashedPassword,
           birthDate: formattedBirthDate,
-          userType: userDTO.userType as UserType
+          userType: userDTO.userType as unknown as UserType
         },
-        
+
       });
 
       res.status(201).json(newUser);

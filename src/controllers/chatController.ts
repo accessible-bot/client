@@ -1,12 +1,10 @@
 import { WebSocketServer, WebSocket, Data } from 'ws';
-import { PublicoKey, sendPrompt } from '../services/chatService';
-import { ChatModel } from '../models/Message';
-
-const MAX_MESSAGES = 50;
+import prisma from '../prisma'; 
+import { UserType } from "@prisma/client";
+import { getResponseWithSemanticCache } from '../services/cacheService'; 
 
 interface ClientMessage {
   userId: string;
-  publico: PublicoKey;
   pergunta: string;
 }
 
@@ -17,14 +15,19 @@ export class ChatController {
     this.wss = new WebSocketServer({ server });
 
     this.wss.on('connection', (ws: WebSocket) => {
+      let currentUserId: string | null = null;
+      let currentHistoricId: string | null = null;
+
+      console.log('Cliente conectado via WebSocket!');
+
       ws.on('message', async (data: Data) => {
         try {
           const rawMsg: ClientMessage = JSON.parse(data.toString());
+          currentUserId = rawMsg.userId;
 
           if (
             !rawMsg.userId ||
             typeof rawMsg.userId !== 'string' ||
-            !rawMsg.publico ||
             !rawMsg.pergunta ||
             typeof rawMsg.pergunta !== 'string'
           ) {
@@ -32,42 +35,85 @@ export class ChatController {
             return;
           }
 
-          let chat = await ChatModel.findOne({ userId: rawMsg.userId });
-          if (!chat) {
-            chat = new ChatModel({ userId: rawMsg.userId, messages: [] });
-          }
-
-          chat.messages.push({
-            role: 'user',
-            content: rawMsg.pergunta,
-            createdAt: new Date(),
+          const user = await prisma.user.findUnique({
+            where: { id: rawMsg.userId },
           });
 
-          if (chat.messages.length > MAX_MESSAGES) {
-            chat.messages = chat.messages.slice(chat.messages.length - MAX_MESSAGES);
+          if (!user) {
+            ws.send(JSON.stringify({ error: 'Usuário não encontrado.' }));
+            return;
           }
 
-          const resposta = await sendPrompt(rawMsg.publico, rawMsg.pergunta);
+          if (!user.userType) {
+            ws.send(JSON.stringify({ error: 'Tipo de usuário não definido.' }));
+            return;
+          }
 
-          chat.messages.push({
-            role: 'assistant',
-            content: resposta,
-            createdAt: new Date(),
+          let chatHistoric = await prisma.historic.findFirst({
+            where: {
+              userId: rawMsg.userId,
+              terminated: false,
+            },
+            include: { messages: { orderBy: { createdAt: 'asc' } } },
           });
 
-          chat.updatedAt = new Date();
+          if (!chatHistoric) {
+            chatHistoric = await prisma.historic.create({
+              data: {
+                userId: rawMsg.userId,
+                endedAt: new Date(),
+                terminated: false,
+              },
+              include: { messages: true },
+            });
+          }
 
-          await chat.save();
+          currentHistoricId = chatHistoric.historicId;
 
-          ws.send(
-            JSON.stringify({
+          await prisma.message.create({
+            data: {
+              role: 'user',
+              content: rawMsg.pergunta,
+              createdAt: new Date(),
+              historic: { connect: { historicId: chatHistoric.historicId } },
+            },
+          });
+
+          const resposta = await getResponseWithSemanticCache(
+            rawMsg.userId,
+            user.userType,
+            rawMsg.pergunta
+          );
+
+          await prisma.message.create({
+            data: {
               role: 'assistant',
               content: resposta,
-            })
-          );
+              createdAt: new Date(),
+              historic: { connect: { historicId: chatHistoric.historicId } },
+            },
+          });
+
+          await prisma.historic.update({
+            where: { historicId: chatHistoric.historicId },
+            data: { endedAt: new Date() },
+          });
+
+          ws.send(JSON.stringify({ role: 'assistant', content: resposta }));
         } catch (error) {
           console.error('Erro no WS chat:', error);
           ws.send(JSON.stringify({ error: 'Erro no processamento da mensagem' }));
+        }
+      });
+
+      ws.on('close', async () => {
+        if (currentHistoricId) {
+          console.log(`WebSocket encerrado. Atualizando histórico ${currentHistoricId} como terminado.`);
+
+          await prisma.historic.update({
+            where: { historicId: currentHistoricId },
+            data: { terminated: true, endedAt: new Date() },
+          });
         }
       });
     });
