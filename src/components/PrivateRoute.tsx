@@ -7,11 +7,7 @@ interface PrivateRouteProps {
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
   const token = localStorage.getItem("authToken");
 
-  if (!token) {
-    return <Navigate to="/" replace />;
-  }
-
-  return <>{children}</>;
+  return token ? <>{children}</> : <Navigate to="/" />;
 };
 
 export default PrivateRoute;
