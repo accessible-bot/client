@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Cadastro.css";
-import { registerUser } from "../../service/Register";
 
 const Cadastro = () => {
   const navigate = useNavigate();
@@ -10,7 +10,6 @@ const Cadastro = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [birthDate, setBirthDate] = useState("");
-  const [userType, setUserType] = useState("");
 
   const [userNameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -50,54 +49,53 @@ const Cadastro = () => {
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-  event.preventDefault();
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
 
-  if (!userNameError && !emailError && !passwordError) {
-    try {
-      const [year, month, day] = birthDate.split("-");
-      const formattedBirthDate = `${day}-${month}-${year}`;
+    if (!userNameError && !emailError && !passwordError) {
+      try {
+        const [year, month, day] = birthDate.split("-");
+        const formattedBirthDate = `${day}-${month}-${year}`;
 
-      const requestData = {
-        email,
-        password,
-        name: userName,
-        birthDate: formattedBirthDate,
-        userType,
-      };
+        const requestData = {
+          email,
+          password,
+          name: userName,
+          birthDate: formattedBirthDate,
+        };
 
-      const data = await registerUser(requestData);
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/users`,
+          requestData
+        );
 
-      alert(data.mensagem || "Cadastro realizado com sucesso!");
-      navigate("/");
-    } catch (error: any) {
-      console.error("Erro ao cadastrar:", error);
+        const data = response.data;
 
-      if (error.response?.data?.mensagem) {
-        alert(error.response.data.mensagem);
-      } else {
-        alert("Erro ao conectar com o servidor.");
+        alert(data.mensagem || "Cadastro realizado com sucesso!");
+        navigate("/");
+      } catch (error: any) {
+        console.error("Erro ao cadastrar:", error);
+
+        if (error.response?.data?.mensagem) {
+          alert(error.response.data.mensagem);
+        } else {
+          alert("Erro ao conectar com o servidor.");
+        }
       }
+    } else {
+      console.log("Preencha os campos solicitados corretamente!");
     }
-  } else {
-    console.log("Preencha os campos solicitados corretamente!");
-  }
-};
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <div className="top-bar1">
-          <img src="AutBot_Logo.png" alt="Logo" />
-          <button className="botao-inicio1">AutBot</button>
-          <button className="botao-sobre1">Sobre</button>
-          <button
-            className="botao-sobre1"
-            type="button"
-            onClick={() => navigate("/")}
-          >
-            Login
-          </button>
+        <div className="top-bar">
+          <div className="logo-container">
+            <img src="AutBot_Logo.png" alt="Logo" />
+            <button className="botao-inicio">AutBot</button>
+          </div>
+          <button className="botao-sobre">Sobre</button>
         </div>
 
         <div className="main-cadastro">
@@ -160,26 +158,6 @@ const Cadastro = () => {
                   max={today}
                   onChange={(e) => setBirthDate(e.target.value)}
                 />
-              </div>
-              <div className="textfield">
-                <label htmlFor="cadastrante">Cadastrante</label>
-                <select
-                  name="cadastrante"
-                  value={userType}
-                  onChange={(e) => setUserType(e.target.value)}
-                  required
-                >
-                  <option value="" disabled>
-                    Selecione uma opção
-                  </option>
-                  <option value="PROFESSOR">Professor</option>
-                  <option value="CUIDADOR">Cuidador</option>
-                  <option value="RESPONSAVEL">Responsável</option>
-                  <option value="USUARIO">Usuário</option>
-                  <option value="TEA_NIVEL_1">Pessoa com Tea Nível 1</option>
-                  <option value="TEA_NIVEL_2">Pessoa com Tea Nível 2</option>
-                  <option value="TEA_NIVEL_3">Pessoa com Tea Nível 3</option>
-                </select>
               </div>
 
               <button className="botao-cadastro">Continuar</button>

@@ -55,7 +55,7 @@ const Login = () => {
 
               {error && <p className="error-message">{error}</p>}
 
-              <div className="textfield1">
+              <div className="textfield">
                 <label htmlFor="usuario">E-mail</label>
                 <input
                   type="text"
@@ -65,7 +65,7 @@ const Login = () => {
                 />
               </div>
 
-              <div className="textfield1">
+              <div className="textfield">
                 <label htmlFor="senha">Senha</label>
                 <input
                   type="password"
