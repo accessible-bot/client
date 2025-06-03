@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { CreateUserDTO } from "../dtos/createUserDTO";
 import { UserType } from "@prisma/client";
 import prisma from "../prisma";
-import { LoginDTO } from "../dtos/loginDTO";
+import { LoginDTO } from "../dtos/loginDTO"; 
 import bcrypt from "bcryptjs";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
