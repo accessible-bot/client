@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./Login.css";
-
+import { loginUser } from "../../service/Login";
 
 const Login = () => {
   const [userName, setUsername] = useState("");
@@ -15,18 +14,10 @@ const Login = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/api/login", {
-        email: userName,
-        password: password,
-      });
+      const response = await loginUser({ email: userName, password });
 
-      if (response.status === 200) {
-        const { token } = response.data;
-        localStorage.setItem("authToken", token);
-        navigate("/chat");
-      } else {
-        setError("Credenciais inválidas.");
-      }
+      localStorage.setItem("authToken", response.token);
+      navigate("/chat");
     } catch (error) {
       console.error("Erro ao realizar login:", error);
       setError("Erro ao conectar ao servidor.");
@@ -39,7 +30,6 @@ const Login = () => {
         <div className="top-bar">
           <img src="AutBot_Logo.png" alt="Logo" />
           <button className="botao-inicio">AutBot</button>
-          <button className="botao-sobre">Sobre</button>
           <button
             className="botao-cadastre"
             type="button"

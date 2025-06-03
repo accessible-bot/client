@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/login/Login';
 import Cadastro from './pages/register/Cadastro';
-import Home from './pages/home/Home';
+import Home from './pages/info/Info';
 import PrivateRoute from './components/PrivateRoute';
 import Chat from './pages/chat/Chat';
 

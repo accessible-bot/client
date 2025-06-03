@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./Cadastro.css";
+import { registerUser } from "../../service/Register";
 
 const Cadastro = () => {
   const navigate = useNavigate();
@@ -50,44 +50,39 @@ const Cadastro = () => {
     }
   };
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+  event.preventDefault();
 
-    if (!userNameError && !emailError && !passwordError) {
-      try {
-        const [year, month, day] = birthDate.split("-");
-        const formattedBirthDate = `${day}-${month}-${year}`;
+  if (!userNameError && !emailError && !passwordError) {
+    try {
+      const [year, month, day] = birthDate.split("-");
+      const formattedBirthDate = `${day}-${month}-${year}`;
 
-        const requestData = {
-          email,
-          password,
-          name: userName,
-          birthDate: formattedBirthDate,
-          userType,
-        };
+      const requestData = {
+        email,
+        password,
+        name: userName,
+        birthDate: formattedBirthDate,
+        userType,
+      };
 
-        const response = await axios.post(
-          "http://localhost:3000/api/users",
-          requestData
-        );
+      const data = await registerUser(requestData);
 
-        const data = response.data;
+      alert(data.mensagem || "Cadastro realizado com sucesso!");
+      navigate("/");
+    } catch (error: any) {
+      console.error("Erro ao cadastrar:", error);
 
-        alert(data.mensagem || "Cadastro realizado com sucesso!");
-        navigate("/");
-      } catch (error: any) {
-        console.error("Erro ao cadastrar:", error);
-
-        if (error.response?.data?.mensagem) {
-          alert(error.response.data.mensagem);
-        } else {
-          alert("Erro ao conectar com o servidor.");
-        }
+      if (error.response?.data?.mensagem) {
+        alert(error.response.data.mensagem);
+      } else {
+        alert("Erro ao conectar com o servidor.");
       }
-    } else {
-      console.log("Preencha os campos solicitados corretamente!");
     }
-  };
+  } else {
+    console.log("Preencha os campos solicitados corretamente!");
+  }
+};
 
   return (
     <form onSubmit={handleSubmit}>
@@ -96,6 +91,13 @@ const Cadastro = () => {
           <img src="AutBot_Logo.png" alt="Logo" />
           <button className="botao-inicio1">AutBot</button>
           <button className="botao-sobre1">Sobre</button>
+          <button
+            className="botao-sobre1"
+            type="button"
+            onClick={() => navigate("/")}
+          >
+            Login
+          </button>
         </div>
 
         <div className="main-cadastro">

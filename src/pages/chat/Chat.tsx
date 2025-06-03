@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
-import axios from "axios"; 
 import "./Chat.css";
 import { FaPaperPlane } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
@@ -13,7 +11,6 @@ interface Conversation {
 
 const Chat = () => {
 
-    const navigate = useNavigate();
     const [currentMessage, setCurrentMessage] = useState<string>("");
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
