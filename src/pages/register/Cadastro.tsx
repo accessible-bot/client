@@ -172,9 +172,13 @@ const Cadastro = () => {
                   <option value="" disabled>
                     Selecione uma opção
                   </option>
-                  <option value="Professor">Professor</option>
-                  <option value="Cuidador">Cuidador</option>
-                  <option value="Usuário">Usuário</option>
+                  <option value="PROFESSOR">Professor</option>
+                  <option value="CUIDADOR">Cuidador</option>
+                  <option value="RESPONSAVEL">Responsável</option>
+                  <option value="USUARIO">Usuário</option>
+                  <option value="TEA_NIVEL_1">Pessoa com Tea Nível 1</option>
+                  <option value="TEA_NIVEL_2">Pessoa com Tea Nível 2</option>
+                  <option value="TEA_NIVEL_3">Pessoa com Tea Nível 3</option>
                 </select>
               </div>
 

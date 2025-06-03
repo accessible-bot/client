@@ -1,5 +1,5 @@
 
-import type { ConversationHistory } from '../../hooks/useHistoryData'; // interface
+import type { ConversationHistory } from '../../hooks/useHistoryData';
 
 import { FaPaperPlane } from 'react-icons/fa'; 
 

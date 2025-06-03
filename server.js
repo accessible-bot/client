@@ -1,4 +1,3 @@
-//server apenas para testar aplicações do  frontend sem o banco de dados
 import express from 'express';
 import fs from 'fs';
 import cors from 'cors';
@@ -58,7 +57,7 @@ app.get('/Historico/:email', (req, res) => {
 });
 
 app.post('/Historico/:email', (req, res) => {
-  const { mensagens } = req.body; // [{ remetente, conteudo, timestamp }]
+  const { mensagens } = req.body; 
   const users = readUsers();
   const index = users.findIndex(u => u.email === req.params.email);
 
