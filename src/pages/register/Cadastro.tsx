@@ -78,8 +78,6 @@ const Cadastro = () => {
 
         if (error.response?.data?.mensagem) {
           alert(error.response.data.mensagem);
-        } else {
-          alert("Erro ao conectar com o servidor.");
         }
       }
     } else {
@@ -96,6 +94,7 @@ const Cadastro = () => {
             <button className="botao-inicio">AutBot</button>
           </div>
           <button className="botao-sobre">Sobre</button>
+          <button className="botao-sobre" onClick={() => navigate("/tutorial")}>Tutorial</button>
         </div>
 
         <div className="main-cadastro">

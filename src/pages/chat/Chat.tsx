@@ -7,9 +7,10 @@ import { IoMdSearch, IoMdChatboxes } from "react-icons/io";
 // Importa o custom hook e os componentes de histórico
 import { useHistoryData } from '../../hooks/useHistoryData';
 import HistoryListItem from '../../components/historico/HistoryListItem';
+import FrequentlyAskedQuestions from "../../components/faq/FrequentlyAskedQuestions"; // Importar o novo componente
 import ConversationDetailView from '../../components/historico/ConversationDetailView';
 
-// Interface para mensagens do chat ATIVO
+//Interface para mensagens do chat ATIVO
 interface ActiveConversationMessage {
     id: string;
     author: 'user' | 'autbot';
@@ -75,6 +76,11 @@ const Chat = () => {
         }
     };
 
+    // Handler para quando uma pergunta frequente é clicada
+    const handleFaqQuestionSelect = (question: string) => {
+        setCurrentMessage(question);
+    };
+
     return (
         <div className="chat-container">
             <div className="top-bar">
@@ -86,7 +92,7 @@ const Chat = () => {
                 </div>
                 <div className="top-bar-links">
 
-                    <button className="botao-sobre" onClick={() => navigate('/sobre')}>Sobre</button>
+                    <button className="botao-sobre" onClick={() => navigate('/tutorial')}>Tutorial</button>
                     <button className="botao-historico" onClick={showHistoryView}>Histórico</button>
                     <button title="Perfil" className="botao-perfil" ><FaUserCircle /></button>
                 </div>
@@ -165,8 +171,9 @@ const Chat = () => {
                             <>
                                 <div className="chat-messages-live">
                                     {activeChatMessages.length === 0 ? (
-                                        <div className="chat-card">
-                                            <h2>Em que posso ajudar?</h2>
+                                        <div className="empty-chat-container">
+                                            <FrequentlyAskedQuestions onQuestionClick={handleFaqQuestionSelect} />
+                                            <div className="chat-card"><h2>Em que posso ajudar?</h2></div>
                                         </div>
                                     ) : (
                                         activeChatMessages.map((message, index) => (

@@ -212,14 +212,25 @@ body {
     overflow-y: auto;
 }
 
+/* Novo container para quando o chat está vazio */
+.empty-chat-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os itens filhos */
+    gap: 20px; /* Espaço entre a lista de FAQ e o card */
+    padding: 20px; /* Adiciona um pouco de padding interno */
+    margin-top: auto; /* Empurra o container para o final do seu flex-pai (chat-messages-live) */
+    width: 100%; /* Garante que o container ocupe a largura para centralizar corretamente */
+}
+
 .chat-card {
-    background-color: #a9e8dc;
-    padding: 40px;
+    background-color: #a9e8dc; /* Restaurando cor original */
+    padding: 40px; /* Restaurando padding original */
     border-radius: 12px;
     text-align: center;
-    width: 70%;
-    max-width: 1300px;
-    margin: auto;
+    width: 70%; /* Restaurando largura original */
+    max-width: 1300px; /* Restaurando max-width original */
+    margin: auto; /* Restaurando margem original, que ajuda na centralização se o pai não for flex com align-items */
 }
 
 .chat-card h2 {
@@ -717,4 +728,46 @@ textarea {
         margin: 10px;
         height: calc(100% - 20px);
     }
+
+/* Estilos para o componente de Perguntas Frequentes */
+.faq-container {
+    padding: 15px; /* Ajustado para melhor encaixe */
+    background-color: #f9f9f9; /* Cor de fundo sutil para o container de FAQ */
+    border-radius: 8px;
+    /* margin: 20px; Removido, pois o empty-chat-container já gerencia o espaçamento */
+    text-align: center; /* Centraliza o título */
+    max-width: 90%; /* Evita que o container fique muito largo em telas grandes */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.faq-title {
+    color: #000; /* Cor do texto do título */
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column; /* Empilha os botões verticalmente */
+    gap: 10px; /* Espaço entre os botões */
+}
+
+.faq-button {
+    background-color: #e7f3fe; /* Cor de fundo mais clara para os botões */
+    color: #185abc; /* Cor do texto dos botões */
+    border: 1px solid #cce0f5; /* Borda sutil */
+    padding: 10px 15px; /* Padding ajustado */
+    border-radius: 20px; /* Bordas mais arredondadas */
+    cursor: pointer;
+    text-align: left; /* Alinha o texto do botão à esquerda */
+    transition: background-color 0.2s ease-in-out;
+    font-size: 0.95em;
+}
+
+.faq-button:hover {
+    background-color: #d0e6fd; 
+    border-color: #b8d6f5;
+}
+
 }

@@ -37,6 +37,7 @@ const Login = () => {
           >
             Cadastre-se
           </button>
+          <button className="botao-cadastre" onClick={() => navigate("/tutorial")}>Tutorial</button>
         </div>
 
         <div className="main-login">
