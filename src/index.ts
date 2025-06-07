@@ -2,10 +2,14 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import http from 'http';
+
 import prisma from './prisma';
+
 import userRoutes from './routes/userRoutes';
 import chatRoutes from './routes/chatRoutes';
 import authRouter from './routes/authRoutes'; 
+import faqRoutes from './routes/faqRoutes';
+
 import { ChatController } from './controllers/chatController';
 
 dotenv.config();
@@ -27,10 +31,12 @@ app.use(express.json());
 app.use('/api', userRoutes);
 app.use('/api', chatRoutes);
 app.use('/api', authRouter);
+app.use('/api', faqRoutes);
+
 app.use(express.static('src/websocket'));
 
 const server = http.createServer(app);
-const chatController = new ChatController(server);
+new ChatController(server); 
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
@@ -43,8 +49,8 @@ process.on('SIGINT', async () => {
     where: { terminated: false },
     data: {
       terminated: true,
-      endedAt: new Date()
-    }
+      endedAt: new Date(),
+    },
   });
   process.exit(0);
 });

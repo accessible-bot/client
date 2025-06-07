@@ -3,8 +3,9 @@ import { sendPrompt } from './chatService';
 import { UserType } from '@prisma/client';
 import { getSimilarityScores } from './embeddingService'; 
 
-const CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000;
-const SIMILARITY_THRESHOLD = 0.70;
+const CACHE_EXPIRATION_MS = Number(process.env.CACHE_EXPIRATION_MS);
+const SIMILARITY_THRESHOLD = Number(process.env.SIMILARITY_THRESHOLD);
+
 
 function cleanText(text: string): string {
   return text

@@ -11,6 +11,18 @@ function cleanText(text: string): string {
     .trim();
 }
 
+const BASE_TEACH_PHRASES = [
+  'autismo',
+  'transtorno do espectro autista',
+  'pessoa com TEA',
+  'comportamento sensorial',
+  'neurodiversidade',
+  'inclusão',
+  'acessibilidade',
+  'criança com TEA',
+  'TEA'
+];
+
 export async function getSimilarityScores(sourceSentence: string, sentences: string[]): Promise<number[]> {
   const cleanSource = cleanText(sourceSentence);
   const cleanSentences = sentences.map(cleanText);
@@ -30,8 +42,6 @@ export async function getSimilarityScores(sourceSentence: string, sentences: str
       },
     }
   );
-
-  console.log('Resposta da API Hugging Face:', response.data);
 
   if (!Array.isArray(response.data)) {
     throw new Error('Resposta inválida da API Hugging Face para similaridade');

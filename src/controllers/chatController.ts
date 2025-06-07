@@ -1,10 +1,11 @@
-import { WebSocketServer, WebSocket, Data } from 'ws';
-import prisma from '../prisma'; 
-import { UserType } from "@prisma/client";
-import { getResponseWithSemanticCache } from '../services/chat/cacheService'; 
+import { WebSocketServer, WebSocket, Data } from "ws";
+import { handleChatMessage } from "../services/chat/chatHandler";
+import prisma from "../prisma";
+import { PublicoKey } from "../services/chat/chatService";
 
 interface ClientMessage {
   userId: string;
+  publico: PublicoKey;
   pergunta: string;
 }
 
@@ -14,105 +15,41 @@ export class ChatController {
   constructor(server: any) {
     this.wss = new WebSocketServer({ server });
 
-    this.wss.on('connection', (ws: WebSocket) => {
-      let currentUserId: string | null = null;
+    this.wss.on("connection", (ws: WebSocket) => {
       let currentHistoricId: string | null = null;
 
-      console.log('Cliente conectado via WebSocket!');
+      console.log("Cliente conectado via WebSocket!");
 
-      ws.on('message', async (data: Data) => {
+      ws.on("message", async (data: Data) => {
         try {
           const rawMsg: ClientMessage = JSON.parse(data.toString());
-          currentUserId = rawMsg.userId;
 
-          if (
-            !rawMsg.userId ||
-            typeof rawMsg.userId !== 'string' ||
-            !rawMsg.pergunta ||
-            typeof rawMsg.pergunta !== 'string'
-          ) {
-            ws.send(JSON.stringify({ error: 'Dados inválidos na mensagem recebida.' }));
-            return;
-          }
+          const { resposta, historicId } = await handleChatMessage(rawMsg);
+          currentHistoricId = historicId;
 
-          const user = await prisma.user.findUnique({
-            where: { id: rawMsg.userId },
-          });
-
-          if (!user) {
-            ws.send(JSON.stringify({ error: 'Usuário não encontrado.' }));
-            return;
-          }
-
-          if (!user.userType) {
-            ws.send(JSON.stringify({ error: 'Tipo de usuário não definido.' }));
-            return;
-          }
-
-          let chatHistoric = await prisma.historic.findFirst({
-            where: {
-              userId: rawMsg.userId,
-              terminated: false,
-            },
-            include: { messages: { orderBy: { createdAt: 'asc' } } },
-          });
-
-          if (!chatHistoric) {
-            chatHistoric = await prisma.historic.create({
-              data: {
-                userId: rawMsg.userId,
-                endedAt: new Date(),
-                terminated: false,
-              },
-              include: { messages: true },
-            });
-          }
-
-          currentHistoricId = chatHistoric.historicId;
-
-          await prisma.message.create({
-            data: {
-              role: 'user',
-              content: rawMsg.pergunta,
-              createdAt: new Date(),
-              historic: { connect: { historicId: chatHistoric.historicId } },
-            },
-          });
-
-          const resposta = await getResponseWithSemanticCache(
-            rawMsg.userId,
-            user.userType,
-            rawMsg.pergunta
+          ws.send(JSON.stringify({ role: "assistant", content: resposta }));
+        } catch (error: any) {
+          console.error("Erro no WS chat:", error);
+          ws.send(
+            JSON.stringify({
+              error: error.message || "Erro no processamento da mensagem",
+            })
           );
-
-          await prisma.message.create({
-            data: {
-              role: 'assistant',
-              content: resposta,
-              createdAt: new Date(),
-              historic: { connect: { historicId: chatHistoric.historicId } },
-            },
-          });
-
-          await prisma.historic.update({
-            where: { historicId: chatHistoric.historicId },
-            data: { endedAt: new Date() },
-          });
-
-          ws.send(JSON.stringify({ role: 'assistant', content: resposta }));
-        } catch (error) {
-          console.error('Erro no WS chat:', error);
-          ws.send(JSON.stringify({ error: 'Erro no processamento da mensagem' }));
         }
       });
 
-      ws.on('close', async () => {
+      ws.on("close", async () => {
         if (currentHistoricId) {
-          console.log(`WebSocket encerrado. Atualizando histórico ${currentHistoricId} como terminado.`);
+          console.log(
+            `WebSocket encerrado. Atualizando histórico ${currentHistoricId} como terminado.`
+          );
 
           await prisma.historic.update({
             where: { historicId: currentHistoricId },
-            data: { terminated: true, endedAt: new Date() },
+            data: {
+              terminated: true,
+              endedAt: new Date(),
+            },
           });
         }
       });
