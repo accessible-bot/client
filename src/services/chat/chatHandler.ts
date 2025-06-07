@@ -1,4 +1,4 @@
-import { PublicoKey, sendPrompt } from "./chatService";
+import { PublicoKey, sendPrompt, generateSummary } from "./chatService";
 import { updateFrequentQuestion } from "./faqService";
 import { getResponseWithSemanticCache } from "./cacheService";
 import prisma from "../../prisma";
@@ -71,6 +71,34 @@ export async function handleChatMessage(rawMsg: ClientMessage) {
       },
     },
   });
+
+  const summaryExists = await prisma.conversationSummary.findUnique({
+    where: { historicId },
+  });
+
+  if (!summaryExists) {
+    let firstQuestion = pergunta;
+
+    if (chatHistoric.messages.length > 0) {
+      const firstUserMessage = chatHistoric.messages.find(
+        (m) => m.role === "user"
+      );
+      if (firstUserMessage) {
+        firstQuestion = firstUserMessage.content;
+      }
+    }
+
+    const resumo = await generateSummary(firstQuestion);
+
+    await prisma.conversationSummary.create({
+      data: {
+        summary: resumo,
+        historic: {
+          connect: { historicId },
+        },
+      },
+    });
+  }
 
   const respostaCache = await getResponseWithSemanticCache(
     userId,

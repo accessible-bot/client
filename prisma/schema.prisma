@@ -55,6 +55,7 @@ model Historic {
   terminated  Boolean
   userId      String
   user        User      @relation(fields: [userId], references: [id])
+  summary ConversationSummary?
 }
 
 model ChatCache {
@@ -76,3 +77,9 @@ model FrequentQuestion {
   answer      String? 
 }
 
+model ConversationSummary {
+  id                String             @id @default(uuid())
+  summary           String
+  historicId        String             @unique
+  historic          Historic           @relation(fields: [historicId], references: [historicId])
+}

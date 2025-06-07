@@ -66,3 +66,38 @@ export async function sendPrompt(publicoKey: PublicoKey, pergunta: string): Prom
 
   return response.data.choices[0].message.content;
 }
+
+export async function generateSummary(text: string): Promise<string> {
+  if (!apiKey) {
+    throw new Error('API_KEY não está definida nas variáveis de ambiente.');
+  }
+
+  const contexto = `Tema: Transtorno do Espectro Autista\n\n${text}`;
+
+  const response = await axios.post(
+    'https://openrouter.ai/api/v1/chat/completions',
+    {
+      model: modelName,
+      messages: [
+        {
+          role: 'system',
+          content: `Gere um título muito curto (máximo de 6 palavras) que resuma a intenção da pergunta do usuário, sem responder ou interpretar o conteúdo. Foque apenas na ação ou objetivo da pergunta. Comece cada substantivo com letra maiúscula e sem pontuação final. Ignore qualquer explicação ou resposta.`
+
+        },
+        {
+          role: 'user',
+          content: contexto
+        }
+      ],
+      temperature: 0.3
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  return  response.data.choices[0].message.content.trim();
+}
