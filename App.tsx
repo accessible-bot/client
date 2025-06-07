@@ -4,7 +4,8 @@ import Cadastro from './pages/register/Cadastro';
 import Home from './pages/home/Home';
 import PrivateRoute from './components/PrivateRoute';
 import Chat from './components/Chat';
-
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function NotFound() {
   return (
@@ -21,8 +22,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
-        <Route path="/404" element={<NotFound />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
         <Route
           path="/home"
