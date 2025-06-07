@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 import { loginUser } from "../../service/Login";
 
@@ -77,7 +77,13 @@ const Login = () => {
               </div>
 
               <button className="botao-login">Login</button>
-              <button className="botao-esqueci-senha">Esqueci minha senha</button>
+              <button
+                type="button"
+                className="botao-esqueci-senha"
+                onClick={() => navigate('/forgot-password')}
+              >
+                Esqueci minha senha
+              </button>
             </div>
           </div>
         </div>
