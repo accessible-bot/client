@@ -1,7 +1,7 @@
 import { WebSocketServer, WebSocket, Data } from 'ws';
 import prisma from '../prisma'; 
 import { UserType } from "@prisma/client";
-import { getResponseWithSemanticCache } from '../services/cacheService'; 
+import { getResponseWithSemanticCache } from '../services/chat/cacheService'; 
 
 interface ClientMessage {
   userId: string;

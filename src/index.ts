@@ -5,7 +5,7 @@ import http from 'http';
 import prisma from './prisma';
 import userRoutes from './routes/userRoutes';
 import chatRoutes from './routes/chatRoutes';
-import authRouter from './authRoutes';
+import authRouter from './routes/authRoutes'; 
 import { ChatController } from './controllers/chatController';
 
 dotenv.config();
@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.use('/api', userRoutes);
 app.use('/api', chatRoutes);
-app.use('/api/auth', authRouter);
+app.use('/api', authRouter);
 app.use(express.static('src/websocket'));
 
 const server = http.createServer(app);

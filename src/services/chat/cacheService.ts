@@ -1,7 +1,7 @@
-import prisma from '../prisma';
-import { sendPrompt } from '../services/chatService';
+import prisma from '../../prisma'; 
+import { sendPrompt } from './chatService'; 
 import { UserType } from '@prisma/client';
-import { getSimilarityScores } from './embeddingService';
+import { getSimilarityScores } from './embeddingService'; 
 
 const CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000;
 const SIMILARITY_THRESHOLD = 0.70;
