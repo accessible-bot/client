@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "./Tutorial.css";
+import SharedTopBar from "../../components/topbar/SharedTopBar";
+
 
 interface Slide {
     text: string;
@@ -33,30 +35,29 @@ const Tutorial = () => {
     };
 
     return (
-        <div className="chat-container">
-            <div className="top-bar">
-                <img src="/AutBot_Logo.png" alt="Logo" />
-                <button className="botao-inicio">AutBot</button>
-            </div>
-            <div className="manual-carousel">
-                <h2>Como usar o AutBot?</h2>
-                <div className="slide">
-                    <p>{slides[currentIndex].text}</p>
+        <div className="tutorial-page-container"> {/* Renomeado para clareza */}
+            <SharedTopBar pageType="tutorial" />
+            <main className="tutorial-content-area"> {/* Wrapper para o conteúdo principal */}
+                <div className="manual-carousel">
+                    <h2>Como usar o AutBot?</h2>
+                    <div className="slide">
+                        <p>{slides[currentIndex].text}</p>
+                    </div>
+                    <div className="controls">
+                        <button onClick={prevSlide} disabled={currentIndex === 0}>
+                            ◀
+                        </button>
+                        <button onClick={nextSlide} disabled={currentIndex === slides.length - 1}>
+                            ▶
+                        </button>
+                    </div>
+                    <div className="dots">
+                        {slides.map((_, i) => (
+                            <span key={i} className={i === currentIndex ? "active" : ""}>●</span>
+                        ))}
+                    </div>
                 </div>
-                <div className="controls">
-                    <button onClick={prevSlide} disabled={currentIndex === 0}>
-                        ◀
-                    </button>
-                    <button onClick={nextSlide} disabled={currentIndex === slides.length - 1}>
-                        ▶
-                    </button>
-                </div>
-                <div className="dots">
-                    {slides.map((_, i) => (
-                        <span key={i} className={i === currentIndex ? "active" : ""}>●</span>
-                    ))}
-                </div>
-            </div>
+            </main>
         </div>
     );
 };
