@@ -16,7 +16,7 @@ html, body {
 }
 
 
-.chat-container { 
+.tutorial-page-container { 
     display: flex;
     flex-direction: column; 
     min-height: 100vh;    
@@ -25,71 +25,13 @@ html, body {
     background-color: #ffffff;
 }
 
-/* --- Top Bar Styles --- */
-.top-bar {
-    width: 100%;
-    height: 90px; 
-    background-color: #b6d9ec;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    padding: 0 30px; 
-}
-
-.logo-title-container { 
-    display: flex;
-    align-items: center;
-    
-    margin-right: auto; 
-}
-
-.top-bar-logo { 
-    line-height: 0; 
-}
-
-.top-bar-logo img { 
-    height: 50px; 
-    width: 50px;  
-    
-}
-
-.botao-inicio { 
-    font-size: 1.2em; 
-    font-weight: 600; 
-    color: #181d54;
-    background: transparent;
-    border: none;
-    margin-left: 10px; 
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.top-bar-links {
-    display: flex;
-    align-items: center;
-    
-}
-
-.botao-perfil { 
-    font-size: 15px;
-    color: #181d54;
-    background: transparent;
-    border: none;
-    margin-left: 25px; 
-    cursor: pointer;
-    white-space: nowrap;
-}
-
 /* --- Tutorial Carousel Styles --- */
 .manual-carousel {
     width: 90%; 
     max-width: 800px; 
     margin: 0 auto;   
     padding: 20px;    
-    padding-top: 120px; 
+    padding-top: 90px; 
     font-family: "Varela Round", sans-serif;
     text-align: center;
     flex-grow: 1; 
@@ -176,29 +118,10 @@ html, body {
 
 /* --- Tablet Responsiveness --- */
 @media (max-width: 768px) {
-    .top-bar {
-        height: 70px;
-        padding: 0 20px;
-    }
-
-    .top-bar-logo img {
-        height: 40px; 
-        width: 40px;
-    }
-
-    .botao-inicio {
-        font-size: 1.1em;
-        margin-left: 8px;
-    }
-
-    .botao-perfil {
-        font-size: 14px;
-        margin-left: 20px; 
-    }
 
     .manual-carousel {
         width: 95%;
-        padding-top: 100px;
+        padding-top: 90px;
         padding-left: 15px;
         padding-right: 15px;
     }
@@ -232,27 +155,7 @@ html, body {
 
 /* --- Mobile Responsiveness --- */
 @media (max-width: 480px) {
-    .top-bar {
-        height: 60px;
-        padding: 0 15px;
-    }
-
-    .top-bar-logo img {
-        height: 35px; 
-        width: 35px;
-    }
-
-    .botao-inicio {
-        font-size: 1em;
-        margin-left: 5px;
-    }
-    
-
-    .botao-perfil {
-        font-size: 13px;
-        margin-left: 15px;
-    }
-
+ 
     .manual-carousel {
         width: 100%; 
         padding-top: 80px; 

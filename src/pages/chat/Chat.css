@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;0,800;0,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Varela+Round&display=swap');
 
 /* Reset básico e box-sizing global */
@@ -26,88 +25,20 @@ body {
     overflow-x: hidden;
 }
 
-.top-bar {
-    width: 100%;
-    height: 90px;
-    background-color: #b6d9ec;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    padding: 0 30px;
-    
-
-}
-
-
-.logo-title-container {
-    display: flex;
-    align-items: center;
-    margin-left: 5px;
-    margin-right: auto;
-   
-
-}
-
-.top-bar-logo img {
-    height: 50px;
-    width: 50px;
-    
-
-
-
-}
-
-.top-bar .botao-inicio {
-    
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #181d54;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    margin-left: 0;
-    white-space: nowrap;
-
-
-}
-
-.top-bar-links {
-    display: flex;
-    align-items: center;
-}
-
-.botao-sobre,
-.botao-historico,
-.botao-perfil {
-    font-size: 15px;
-    color: #181d54;
-    background: transparent;
-    border: none;
-    margin-left: 25px;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-
 .content-area-below-top-bar {
     display: flex;
     flex: 1;
-    margin-top: 90px;
-    
+    margin-top: 60px; /* Altura da SharedTopBar */
     overflow: hidden;
+    min-width: 100vw;
 }
-
 .sidebar {
     width: 280px;
     background-color: #e0e0e0;
     display: flex;
     flex-direction: column;
     padding: 20px 10px;
-    height: calc(100vh - 90px);
-   
+    height: calc(100vh - 60px); /* Altura total da viewport menos a SharedTopBar */
     overflow-y: auto;
     flex-shrink: 0;
     border-right: 1px solid #e0e0e0;
@@ -188,9 +119,8 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #f0f2f5;
-    position: relative;
-    height: calc(100vh - 90px);
-    /* Altura da top-bar */
+    position: relative; /* Para o posicionamento absoluto do chat-input-container */
+    height: calc(100vh - 60px); /* Altura total da viewport menos a SharedTopBar */
 }
 
 .chat-header {
@@ -213,14 +143,15 @@ body {
 }
 
 /* Novo container para quando o chat está vazio */
+
 .empty-chat-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza os itens filhos */
-    gap: 20px; /* Espaço entre a lista de FAQ e o card */
-    padding: 20px; /* Adiciona um pouco de padding interno */
-    margin-top: auto; /* Empurra o container para o final do seu flex-pai (chat-messages-live) */
-    width: 100%; /* Garante que o container ocupe a largura para centralizar corretamente */
+    align-items: flex-start; /* Alinhado para a esquerda (início) */
+    gap: 20px;
+    padding: 20px;
+    margin-top: auto;
+    width: 100%;
 }
 
 .chat-card {
@@ -228,9 +159,8 @@ body {
     padding: 40px; /* Restaurando padding original */
     border-radius: 12px;
     text-align: center;
-    width: 70%; /* Restaurando largura original */
-    max-width: 1300px; /* Restaurando max-width original */
-    margin: auto; /* Restaurando margem original, que ajuda na centralização se o pai não for flex com align-items */
+    width:100%;
+    margin: 0; /* Restaurando margem original, que ajuda na centralização se o pai não for flex com align-items */
 }
 
 .chat-card h2 {
@@ -243,8 +173,10 @@ body {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 20px;
+    gap: 10px; /* Espaço entre as bolhas de mensagem */
+    padding-top: 20px;    /* Manter padding vertical */
+    padding-left: 0;      /* Remover padding horizontal */
+    padding-right: 0;     /* Remover padding horizontal */
     padding-bottom: 80px;
 }
 
@@ -258,23 +190,17 @@ body {
     display: flex;
     flex-direction: column;
 }
-
-.chat-bubble.user {
-    background-color: #A9CCE3;
-    color: #181d54;
-    align-self: flex-end;
-    border-bottom-right-radius: 5px;
-}
-
-.chat-bubble {
+.chat-bubble.autbot {
     background-color: #1a4d86;
     color: #ffffff;
     align-self: flex-start;
     border-bottom-left-radius: 5px;
 }
-
-.chat-messages-container {
-    background-color: #a9e8dc;
+.chat-bubble.user {
+    background-color: #A9CCE3;
+    color: #181d54;
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
 }
 
 .message-text {
@@ -426,14 +352,18 @@ textarea {
     height: calc(100% - 40px);
 }
 
-.chat-messages-container {
+/* Esta classe é usada dentro de ConversationDetailView para exibir mensagens do histórico */
+.conversation-detail-view .chat-messages-container {
     flex: 1;
-    padding: 20px;
     overflow-y: auto;
+    padding-top: 20px;    /* Manter padding vertical */
+    padding-left: 0;      /* Remover padding horizontal */
+    padding-right: 0;     /* Remover padding horizontal */
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding-bottom: 80px;
+    background-color: #a9e8dc; /* Adicionado da definição anterior de .chat-messages-container */
 }
 
 .chat-input-area-readonly {
@@ -516,41 +446,18 @@ textarea {
 
 /* Tablet e Celular em Paisagem (até 768px) */
 @media (max-width: 768px) {
-    .top-bar {
-        padding: 0 15px;
-        height: 70px;
-    }
+    /* Estilos da antiga .top-bar e seus botões foram removidos daqui,
+       pois SharedTopBar tem seu próprio CSS e altura fixa. */
 
-    /* .top-bar-logo mantém seu tamanho original (height: 50px;) */
-    /* Removida a regra que alterava .top-bar-logo height para 40px */
-
-    .top-bar .botao-inicio {
-        /* Nome "AutBot" */
-        font-size: 1.1em;
-    }
-
-    .botao-sobre,
-    .botao-historico,
-    .botao-perfil {
-        font-size: 13px;
-        margin-left: 10px;
-    }
-
-    .botao-perfil .profile-text {
-        display: none;
-        /* Oculta o texto "Perfil" se necessário */
-    }
-
-    .botao-perfil svg {
-        font-size: 22px;
-        margin: 0;
-    }
+    /* Se houver necessidade de ajustar o ícone de perfil do SharedTopBar em telas menores,
+       isso deve ser feito em SharedTopBar.css. Exemplo: */
+    /* .shared-nav-button.icon-button svg { font-size: 22px; margin: 0; } */
+    /* .shared-nav-button .profile-text { display: none; } */
 
     .content-area-below-top-bar {
         flex-direction: column;
-        margin-top: 70px;
-        /* Nova altura da top-bar */
-        height: calc(100vh - 70px);
+        margin-top: 60px;
+        height: calc(100vh - 60px); /* Altura da SharedTopBar */
     }
 
     .sidebar {
@@ -559,8 +466,7 @@ textarea {
         max-height: 40vh;
         border-right: none;
         border-bottom: 1px solid #e0e0e0;
-        padding: 15px 10px;
-        /* height: calc(...) não é mais necessário devido ao max-height e content-area */
+        padding: 15px 10px; /* height: calc(...) não é mais necessário devido ao max-height e content-area */
     }
 
     .main-chat {
@@ -569,7 +475,7 @@ textarea {
     }
 
     .chat-messages-live,
-    .chat-messages-container {
+    .conversation-detail-view .chat-messages-container {
         padding-bottom: 70px;
     }
 
@@ -579,8 +485,10 @@ textarea {
     }
 
     .chat-card {
-        width: 90%;
+        width: 100%;
         margin: 15px auto;
+        margin-top: 15px;
+        margin-bottom: 15px;
         padding: 20px;
     }
 
@@ -626,35 +534,9 @@ textarea {
 
 /* Celular em Retrato (até 480px) */
 @media (max-width: 480px) {
-    .top-bar {
-        padding: 0 10px;
-        /* Padding da barra ainda menor */
-    }
-
-    /* .top-bar-logo mantém seu tamanho original (height: 50px;) */
-    /* Removida a regra que alterava .top-bar-logo height para 35px */
-    .top-bar-logo {
-        margin-right: 8px;
-        /* Espaço entre logo e nome "AutBot" pode ser reduzido */
-    }
-
-    .top-bar .botao-inicio {
-        /* Nome "AutBot" */
-        font-size: 1em;
-        /* Fonte menor para o nome */
-    }
-
-    .botao-sobre,
-    .botao-historico,
-    .botao-perfil {
-        font-size: 12px;
-        margin-left: 8px;
-    }
-
-    /* .botao-perfil .profile-text continua display: none; */
-    .botao-perfil svg {
-        font-size: 20px;
-    }
+    /* Estilos da antiga .top-bar e seus botões foram removidos daqui. */
+    /* Ajustes no ícone de perfil do SharedTopBar (se necessário): */
+    /* .shared-nav-button.icon-button svg { font-size: 20px; } */
 
     .sidebar {
         max-height: 35vh;
@@ -682,10 +564,18 @@ textarea {
         padding: 0 15px;
         height: 55px;
     }
+    
+    .chat-card {
+
+    }
+
 
     .chat-messages-live,
-    .chat-messages-container {
+    .conversation-detail-view .chat-messages-container {
         padding: 15px;
+        padding-top: 15px; /* Ajustar padding vertical para mobile */
+        padding-left: 0;
+        padding-right: 0;
         padding-bottom: 65px;
     }
 
@@ -728,17 +618,17 @@ textarea {
         margin: 10px;
         height: calc(100% - 20px);
     }
+} /* Fim da media query @media (max-width: 480px) */
 
 /* Estilos para o componente de Perguntas Frequentes */
+/* Movido para fora da media query, pois são estilos globais para o componente FAQ */
 .faq-container {
-    padding: 15px; /* Ajustado para melhor encaixe */
-    background-color: #f9f9f9; /* Cor de fundo sutil para o container de FAQ */
+    padding: 15px;
+    background-color: #f9f9f9;
     border-radius: 8px;
-    /* margin: 20px; Removido, pois o empty-chat-container já gerencia o espaçamento */
-    text-align: center; /* Centraliza o título */
-    max-width: 90%; /* Evita que o container fique muito largo em telas grandes */
-    margin-left: auto;
-    margin-right: auto;
+    text-align: center;
+    min-width: 100%; /* Esta regra fará o "esticamento" */
+
 }
 
 .faq-title {
@@ -766,8 +656,6 @@ textarea {
 }
 
 .faq-button:hover {
-    background-color: #d0e6fd; 
+    background-color: #d0e6fd;
     border-color: #b8d6f5;
-}
-
 }

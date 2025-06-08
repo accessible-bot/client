@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Chat.css";
-import { FaPaperPlane, FaUserCircle } from "react-icons/fa";
+import { FaPaperPlane } from "react-icons/fa";
 import { IoMdSearch, IoMdChatboxes } from "react-icons/io";
 
 // Importa o custom hook e os componentes de histórico
@@ -9,6 +9,7 @@ import { useHistoryData } from '../../hooks/useHistoryData';
 import HistoryListItem from '../../components/historico/HistoryListItem';
 import FrequentlyAskedQuestions from "../../components/faq/FrequentlyAskedQuestions"; // Importar o novo componente
 import ConversationDetailView from '../../components/historico/ConversationDetailView';
+import SharedTopBar from "../../components/topbar/SharedTopBar";
 
 //Interface para mensagens do chat ATIVO
 interface ActiveConversationMessage {
@@ -82,27 +83,16 @@ const Chat = () => {
     };
 
     return (
-        <div className="chat-container">
-            <div className="top-bar">
-                <div className="top-bar-logo"><img src="/AutBot_Logo.png" alt="Logo AutBot" /></div>
-                <div className="logo-title-container">
-
-
-                    <button className="botao-inicio" onClick={showChatView}>AutBot</button>
-                </div>
-                <div className="top-bar-links">
-
-                    <button className="botao-sobre" onClick={() => navigate('/tutorial')}>Tutorial</button>
-                    <button className="botao-historico" onClick={showHistoryView}>Histórico</button>
-                    <button title="Perfil" className="botao-perfil" ><FaUserCircle /></button>
-                </div>
-            </div>
-
-            <div className="content-area-below-top-bar">
+            <><SharedTopBar
+            pageType="chat"
+            onShowChatView={showChatView}
+            onShowHistoryView={showHistoryView}
+            isHistoryViewActive={currentView === 'history'}
+            /><div className="content-area-below-top-bar">
                 {/* Sidebar */}
                 <aside className="sidebar">
                     <div className="icon-section">
-                        <button title="buscar chat" className="send-button" ><IoMdSearch /></button>
+                        <button title="buscar chat" className="send-button"><IoMdSearch /></button>
                         <button title="criar um novo chat" className="send-button"><IoMdChatboxes /></button>
                     </div>
 
@@ -140,8 +130,7 @@ const Chat = () => {
                                                         key={conv.id}
                                                         conversation={conv}
                                                         onSelect={setSelectedConversationId}
-                                                        isSelected={conv.id === selectedConversationId}
-                                                    />
+                                                        isSelected={conv.id === selectedConversationId} />
                                                 ))}
                                             </div>
                                         </div>
@@ -192,8 +181,7 @@ const Chat = () => {
                                         placeholder="Escreva sua mensagem aqui..."
                                         value={currentMessage}
                                         onChange={handleInputChange}
-                                        onKeyDown={handleKeyDown}
-                                    />
+                                        onKeyDown={handleKeyDown} />
                                     <button
                                         type="button"
                                         className="send-button"
@@ -211,8 +199,7 @@ const Chat = () => {
                         )}
                     </main>
                 </div>
-            </div>
-        </div>
+            </div></>
     );
 };
 
