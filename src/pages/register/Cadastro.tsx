@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Cadastro.css";
+import SharedTopBar from "../../components/topbar/SharedTopBar";
+
 
 const Cadastro = () => {
   const navigate = useNavigate();
@@ -86,16 +88,10 @@ const Cadastro = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <div className="top-bar">
-          <div className="logo-container">
-            <img src="AutBot_Logo.png" alt="Logo" />
-            <button className="botao-inicio">AutBot</button>
-          </div>
-          <button className="botao-sobre">Sobre</button>
-          <button className="botao-sobre" onClick={() => navigate("/tutorial")}>Tutorial</button>
-        </div>
+    <div className="cadastro-page-container">
+      <SharedTopBar pageType="register" />
+      <main className="cadastro-content-area">
+        <form onSubmit={handleSubmit} className="cadastro-form">
 
         <div className="main-cadastro">
           <div className="left-cadastro">
@@ -163,8 +159,9 @@ const Cadastro = () => {
             </div>
           </div>
         </div>
-      </div>
     </form>
+    </main>
+  </div>
   );
 };
 

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { loginUser } from "../../service/Login";
+import SharedTopBar from "../../components/topbar/SharedTopBar";
+
 
 const Login = () => {
   const [userName, setUsername] = useState("");
@@ -25,20 +27,10 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <div className="top-bar">
-          <img src="AutBot_Logo.png" alt="Logo" />
-          <button className="botao-inicio">AutBot</button>
-          <button
-            className="botao-cadastre"
-            type="button"
-            onClick={() => navigate("/cadastro")}
-          >
-            Cadastre-se
-          </button>
-          <button className="botao-cadastre" onClick={() => navigate("/tutorial")}>Tutorial</button>
-        </div>
+    <div className="login-page-container">
+      <SharedTopBar pageType="login" />
+      <main className="login-content-area">
+        <form onSubmit={handleSubmit} className="login-form">
 
         <div className="main-login">
           <div className="left-login">
@@ -81,8 +73,9 @@ const Login = () => {
             </div>
           </div>
         </div>
-      </div>
-    </form>
+        </form>
+      </main>
+    </div>
   );
 };
 
