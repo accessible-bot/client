@@ -6,6 +6,7 @@ import Chat from './pages/chat/Chat';
 import PrivateRoute from './components/PrivateRoute';
 import Tutorial from './pages/tutorial/Tutorial';
 //import HistoricoPage from './pages/HistoricoPage';
+import Profile from './pages/profile/Profile';
 
 function NotFound() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/perfil" element={<Profile />} />
         <Route path="/tutorial" element={<Tutorial/>} />
 {/* 
         <Route

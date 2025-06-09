@@ -3,7 +3,7 @@ import './SharedTopBar.css';
 import { FaUserCircle, FaArrowLeft } from 'react-icons/fa'; 
 
 interface SharedTopBarProps {
-  pageType: 'login' | 'register' | 'chat' | 'tutorial';
+  pageType: 'login' | 'register' | 'chat' | 'tutorial' | 'profile';
   onShowChatView?: () => void;    
   onShowHistoryView?: () => void; 
   isHistoryViewActive?: boolean;  
@@ -38,10 +38,16 @@ const SharedTopBar = ({ pageType, onShowChatView, onShowHistoryView, isHistoryVi
           </button>
         )}
         
+          {pageType === 'profile' && (
+          <button title="Voltar" className="shared-nav-button icon-button" onClick={() => navigate(-1)}>
+            <FaArrowLeft size={20} />
+          </button>
+        )}
+
         {pageType === 'chat' && (
           <>
             
-            <button className="shared-nav-button" onClick={() => navigate('/')}> 
+            <button className="shared-nav-button" onClick={() => navigate('/')}> {/* Assume / como logout/home */}
               Sair
             </button>
             
