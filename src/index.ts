@@ -10,6 +10,9 @@ import chatRoutes from './routes/chatRoutes';
 import authRouter from './routes/authRoutes'; 
 import faqRoutes from './routes/faqRoutes';
 
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './docs/swaggerConfig'; 
+
 import { ChatController } from './controllers/chatController';
 
 dotenv.config();
@@ -32,11 +35,13 @@ app.use('/api', userRoutes);
 app.use('/api', chatRoutes);
 app.use('/api', authRouter);
 app.use('/api', faqRoutes);
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.static('src/websocket'));
 
 const server = http.createServer(app);
-new ChatController(server); 
+new ChatController(server);
+
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
