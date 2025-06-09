@@ -144,10 +144,10 @@ export class UserController {
 
   static async update(req: Request, res: Response): Promise<void> {
     try {
-      const { userId } = req.params;
-      const { name, email, password } = req.body;
+      const { id } = req.params;
+      const { name, email, userType } = req.body;
 
-      const user = await prisma.user.findUnique({where: {id: userId}});
+      const user = await prisma.user.findUnique({where: {id: id}});
 
       if (!user) {
         res.status(404).json({ message: "Usuário não encontrado" });
@@ -155,11 +155,11 @@ export class UserController {
       }
 
       const updatedUser = await prisma.user.update({
-        where: { id: userId },
+        where: { id: id },
         data: {
           ...(name && { name }),
           ...(email && { email }),
-          ...(password && { password }),
+          ...(userType && { userType }),
         },
     });
 

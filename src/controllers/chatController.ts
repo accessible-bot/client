@@ -51,7 +51,6 @@ export class ChatController {
     }
 
     server.on('upgrade', (request: UpgradeRequest, socket: Socket, head: Buffer) => {
-      // Obtém a URL completa para pegar o token do query string
       const url = new URL(request.url || '', `http://${request.headers.host}`);
       const token: string | null = url.searchParams.get('token');
 
