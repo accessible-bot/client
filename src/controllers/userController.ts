@@ -104,7 +104,8 @@ export class UserController {
           email: userDTO.email!,
           password: hashedPassword,
           birthDate: formattedBirthDate,
-          userType: userDTO.userType as unknown as UserType
+          userType: userDTO.userType as UserType,
+          dataConsent: userDTO.dataConsent
         },
 
       });
