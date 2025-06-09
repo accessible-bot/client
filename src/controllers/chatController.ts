@@ -51,24 +51,24 @@ export class ChatController {
     }
 
     server.on('upgrade', (request: UpgradeRequest, socket: Socket, head: Buffer) => {
-      if (request.url?.startsWith('/chat')) {
-      const url = new URL(request.url, `http://${request.headers.host}`);
+      // Obtém a URL completa para pegar o token do query string
+      const url = new URL(request.url || '', `http://${request.headers.host}`);
       const token: string | null = url.searchParams.get('token');
+
       if (!token) {
         socket.destroy();
         return;
       }
+
       try {
         const secret: string = process.env.JWT_SECRET!;
         jwt.verify(token, secret);
+
         this.wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
-        this.wss.emit('connection', ws, request);
+          this.wss.emit('connection', ws, request);
         });
       } catch {
         socket.destroy();
-      }
-      } else {
-      socket.destroy();
       }
     });
   }

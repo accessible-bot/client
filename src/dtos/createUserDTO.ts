@@ -7,8 +7,7 @@ import {
   Matches,
   IsBoolean,
 } from "class-validator";
-import { Prisma, PrismaClient, UserType } from "@prisma/client";
-import { Transform } from "class-transformer";
+import { UserType } from "@prisma/client";
 import {
   registerDecorator,
   ValidationArguments,
