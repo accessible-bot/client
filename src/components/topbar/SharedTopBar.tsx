@@ -4,9 +4,9 @@ import { FaUserCircle, FaArrowLeft } from 'react-icons/fa';
 
 interface SharedTopBarProps {
   pageType: 'login' | 'register' | 'chat' | 'tutorial';
-  onShowChatView?: () => void;    // Específico para a página de Chat
-  onShowHistoryView?: () => void; // Específico para a página de Chat
-  isHistoryViewActive?: boolean;  // Indica se a visualização de histórico está ativa no chat
+  onShowChatView?: () => void;    
+  onShowHistoryView?: () => void; 
+  isHistoryViewActive?: boolean;  
 }
 
 const SharedTopBar = ({ pageType, onShowChatView, onShowHistoryView, isHistoryViewActive }: SharedTopBarProps) => {
@@ -14,11 +14,11 @@ const SharedTopBar = ({ pageType, onShowChatView, onShowHistoryView, isHistoryVi
 
   const handleAutBotClick = () => {
     if (pageType === 'chat' && onShowChatView) {
-      onShowChatView(); // Volta para a visualização principal do chat
-    } else if (pageType === 'tutorial') { // Volta para a visualização principal do histórico
-      navigate('/'); // Leva para a página de chat
+      onShowChatView(); 
+    } else if (pageType === 'tutorial') { 
+      navigate('/'); 
     } else {
-      navigate('/'); // Comportamento padrão para login/register (vai para a home/login)
+      navigate('/'); 
     }
   };
 
@@ -41,7 +41,7 @@ const SharedTopBar = ({ pageType, onShowChatView, onShowHistoryView, isHistoryVi
         {pageType === 'chat' && (
           <>
             
-            <button className="shared-nav-button" onClick={() => navigate('/')}> {/* Assume / como logout/home */}
+            <button className="shared-nav-button" onClick={() => navigate('/')}> 
               Sair
             </button>
             

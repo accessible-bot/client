@@ -1,6 +1,6 @@
 .shared-top-bar {
   width: 100%;
-  height: 60px; /* Altura da barra */
+  height: 60px;
   background-color: #b6d9ec;
   padding: 0 20px;
   display: flex;
