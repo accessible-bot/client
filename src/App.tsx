@@ -28,15 +28,15 @@ function App() {
         <Route path="/chat" element={<Chat />} />
         <Route path="/perfil" element={<Profile />} />
         <Route path="/tutorial" element={<Tutorial/>} />
-{/* 
-        <Route
-  path="/historico"
-  element={
-    <PrivateRoute>
-      <HistoricoPage />
-    </PrivateRoute>
-  }
-/> */}
+
+        <Route 
+          path="/alterar-senha" 
+          element={
+            <PrivateRoute>
+              <ChangePasswordForm />
+            </PrivateRoute>
+          } 
+        />
 
         <Route
           path="/home"
