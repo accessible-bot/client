@@ -5,8 +5,9 @@ import Home from './pages/info/Info';
 import Chat from './pages/chat/Chat';
 import PrivateRoute from './components/PrivateRoute';
 import Tutorial from './pages/tutorial/Tutorial';
-//import HistoricoPage from './pages/HistoricoPage';
+import HistoricoPage from './pages/HistoricoPage';
 import Profile from './pages/profile/Profile';
+import ChangePasswordForm from './components/ChangePasswordForm';
 
 function NotFound() {
   return (
