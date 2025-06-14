@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import SharedTopBar from '../../components/topbar/SharedTopBar';
 import './profile.css';
-import { FaUserCircle, FaEnvelope, FaInfoCircle, FaEdit, FaSave, FaTimes, FaKey } from 'react-icons/fa';
+import { FaUserCircle, FaEnvelope, FaInfoCircle, FaEdit, FaSave, FaTimes, FaKey, FaSignOutAlt } from 'react-icons/fa';
 
 interface UserProfile {
   name: string;
@@ -40,6 +40,14 @@ const Profile = () => {
   const handleCancel = () => {
     setTempProfileData(profileData);
     setIsEditing(false);
+  };
+
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Tem a certeza que deseja sair?");
+    if (confirmLogout) {
+      localStorage.removeItem('authToken');
+      navigate('/');
+    }
   };
  
   return (
@@ -123,6 +131,15 @@ const Profile = () => {
               </>
             )}
           </div>
+          
+          {!isEditing && (
+            <div className="logout-section">
+              <button type="button" onClick={handleLogout} className="profile-button logout-button">
+                <FaSignOutAlt /> Sair da Conta
+              </button>
+            </div>
+          )}
+
         </form>
       </main>
     </div>
@@ -130,3 +147,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
