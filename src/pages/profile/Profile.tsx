@@ -1,19 +1,17 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import SharedTopBar from '../../components/topbar/SharedTopBar';
 import './profile.css';
-import { FaUserCircle, FaEnvelope, FaInfoCircle, FaEdit, FaSave, FaTimes } from 'react-icons/fa';
+import { FaUserCircle, FaEnvelope, FaInfoCircle, FaEdit, FaSave, FaTimes, FaKey } from 'react-icons/fa';
 
 interface UserProfile {
   name: string;
   email: string;
   bio: string;
-
 }
 
 const Profile = () => {
-  const navigate = useNavigate(); // Embora SharedTopBar lide com o "voltar", pode ser útil aqui.
-
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState<UserProfile>({
     name: 'Nome do Usuário Exemplo',
@@ -28,24 +26,22 @@ const Profile = () => {
   };
 
   const handleEdit = () => {
-    setTempProfileData(profileData); // Reseta os dados temporários para os dados atuais ao iniciar a edição
+    setTempProfileData(profileData);
     setIsEditing(true);
   };
 
   const handleSave = (e: FormEvent) => {
     e.preventDefault();
-    // Aqui você faria a chamada API para salvar os dados
     console.log('Salvando dados:', tempProfileData);
     setProfileData(tempProfileData);
     setIsEditing(false);
-    // Adicionar feedback ao usuário (ex: toast notification)
   };
 
   const handleCancel = () => {
-    setTempProfileData(profileData); // Restaura os dados originais
+    setTempProfileData(profileData);
     setIsEditing(false);
   };
-  
+ 
   return (
     <div className="profile-page-container">
       <SharedTopBar pageType="profile" />
@@ -55,7 +51,6 @@ const Profile = () => {
             <h2>{isEditing ? 'Editar Perfil' : 'Meu Perfil'}</h2>
           </div>
 
-      {/* Novo container para permitir rolagem apenas dos campos */}
           <div className="profile-fields-scroll-container">
             <div className="profile-field">
               <label htmlFor="name"><FaUserCircle className="field-icon" /> Nome:</label>
@@ -73,7 +68,7 @@ const Profile = () => {
               )}
             </div>
 
-                      <div className="profile-field">
+            <div className="profile-field">
               <label htmlFor="email"><FaEnvelope className="field-icon" /> Email:</label>
               {isEditing ? (
                 <input
@@ -97,13 +92,13 @@ const Profile = () => {
                   name="bio"
                   value={tempProfileData.bio}
                   onChange={handleInputChange}
-                  rows={3} /* Reduzido para melhor encaixe no card quadrado/compacto */
+                  rows={3}
                 />
               ) : (
                 <p className="profile-bio">{profileData.bio || "Nenhuma biografia adicionada."}</p>
               )}
             </div>
-          </div> {/* Fim do .profile-fields-scroll-container */}
+          </div>
 
           <div className="profile-actions">
             {isEditing ? (
@@ -116,9 +111,16 @@ const Profile = () => {
                 </button>
               </>
             ) : (
-              <button type="button" onClick={handleEdit} className="profile-button edit-button">
-                <FaEdit /> Editar Perfil
-              </button>
+              <>
+                <button type="button" onClick={handleEdit} className="profile-button edit-button">
+                  <FaEdit /> Editar Perfil
+                </button>
+                <Link to="/alterar-senha">
+                  <button type="button" className="profile-button change-password-button">
+                    <FaKey /> Alterar Senha
+                  </button>
+                </Link>
+              </>
             )}
           </div>
         </form>
