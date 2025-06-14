@@ -1,127 +1,170 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, type ChangeEvent, type FormEvent, type MouseEvent } from 'react';
 import SharedTopBar from '../../components/topbar/SharedTopBar';
 import './profile.css';
-import { FaUserCircle, FaEnvelope, FaInfoCircle, FaEdit, FaSave, FaTimes } from 'react-icons/fa';
+import { FaUserCircle, FaEnvelope, FaEdit, FaSave, FaTimes, FaUserTag } from 'react-icons/fa';
+import { fetchUserData, updateUserData } from "../../service/User"
 
 interface UserProfile {
   name: string;
   email: string;
-  bio: string;
-
+  userType: string;
 }
 
+const userTypeLabels: Record<string, string> = {
+  CUIDADOR: "Cuidador",
+  PROFESSOR: "Professor",
+  RESPONSAVEL: "Responsável",
+  TEA_NIVEL_1: "TEA Nível 1",
+  TEA_NIVEL_2: "TEA Nível 2",
+  TEA_NIVEL_3: "TEA Nível 3",
+  USUARIO: "Usuário Geral",
+};
+
 const Profile = () => {
-  const navigate = useNavigate(); // Embora SharedTopBar lide com o "voltar", pode ser útil aqui.
-
   const [isEditing, setIsEditing] = useState(false);
-  const [profileData, setProfileData] = useState<UserProfile>({
-    name: 'Nome do Usuário Exemplo',
-    email: 'usuario@exemplo.com',
-    bio: 'Professor, tutor, familiar...'
-  });
-  const [tempProfileData, setTempProfileData] = useState<UserProfile>(profileData);
+  const [profileData, setProfileData] = useState<UserProfile | null>(null);
+  const [tempProfileData, setTempProfileData] = useState<UserProfile | null>(null);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const userId = localStorage.getItem("id");
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const loadUserData = async () => {
+      const data = await fetchUserData(userId);
+      if (data) {
+        setProfileData(data);
+        setTempProfileData(data);
+      }
+    };
+
+    loadUserData();
+  }, [userId]);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setTempProfileData(prev => ({ ...prev, [name]: value }));
+    setTempProfileData(prev => prev ? { ...prev, [name]: value } : null);
   };
 
-  const handleEdit = () => {
-    setTempProfileData(profileData); // Reseta os dados temporários para os dados atuais ao iniciar a edição
-    setIsEditing(true);
-  };
-
-  const handleSave = (e: FormEvent) => {
+  const handleEdit = (e: MouseEvent) => {
     e.preventDefault();
-    // Aqui você faria a chamada API para salvar os dados
-    console.log('Salvando dados:', tempProfileData);
-    setProfileData(tempProfileData);
-    setIsEditing(false);
-    // Adicionar feedback ao usuário (ex: toast notification)
+    console.log("📝 Entrando no modo de edição");
+    if (profileData) {
+      setTempProfileData(profileData);
+      setIsEditing(true);
+    }
+  };
+
+  const handleSave = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!userId || !tempProfileData) return;
+
+    console.log("💾 Salvando alterações...");
+    const updated = await updateUserData(userId, {
+      name: tempProfileData.name,
+      email: tempProfileData.email,
+      userType: tempProfileData.userType,
+    });
+
+    if (updated) {
+      console.log("✅ Alterações salvas:", updated);
+      setProfileData(updated);
+      setIsEditing(false);
+    }
   };
 
   const handleCancel = () => {
-    setTempProfileData(profileData); // Restaura os dados originais
+    setTempProfileData(profileData);
     setIsEditing(false);
   };
-  
+
+  if (!profileData || !tempProfileData) {
+    return <div className="profile-page-container">Carregando...</div>;
+  }
+
   return (
     <div className="profile-page-container">
       <SharedTopBar pageType="profile" />
       <main className="profile-content">
         <form onSubmit={handleSave} className="profile-card">
-          <div className="profile-header">
-            <h2>{isEditing ? 'Editar Perfil' : 'Meu Perfil'}</h2>
-          </div>
+  <div className="profile-header">
+    <h2>{isEditing ? 'Editar Perfil' : 'Meu Perfil'}</h2>
+  </div>
 
-      {/* Novo container para permitir rolagem apenas dos campos */}
-          <div className="profile-fields-scroll-container">
-            <div className="profile-field">
-              <label htmlFor="name"><FaUserCircle className="field-icon" /> Nome:</label>
-              {isEditing ? (
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={tempProfileData.name}
-                  onChange={handleInputChange}
-                  required
-                />
-              ) : (
-                <span>{profileData.name}</span>
-              )}
-            </div>
+  <div className="profile-fields-scroll-container">
+    {/* Nome */}
+    <div className="profile-field">
+      <label htmlFor="name"><FaUserCircle className="field-icon" /> Nome:</label>
+      {isEditing ? (
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={tempProfileData.name}
+          onChange={handleInputChange}
+          required
+        />
+      ) : (
+        <span>{profileData.name}</span>
+      )}
+    </div>
 
-                      <div className="profile-field">
-              <label htmlFor="email"><FaEnvelope className="field-icon" /> Email:</label>
-              {isEditing ? (
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={tempProfileData.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              ) : (
-                <span>{profileData.email}</span>
-              )}
-            </div>
+    {/* Email */}
+    <div className="profile-field">
+      <label htmlFor="email"><FaEnvelope className="field-icon" /> Email:</label>
+      {isEditing ? (
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={tempProfileData.email}
+          onChange={handleInputChange}
+          required
+        />
+      ) : (
+        <span>{profileData.email}</span>
+      )}
+    </div>
 
-            <div className="profile-field">
-              <label htmlFor="bio"><FaInfoCircle className="field-icon" /> Tipo de conta:</label>
-              {isEditing ? (
-                <textarea
-                  id="bio"
-                  name="bio"
-                  value={tempProfileData.bio}
-                  onChange={handleInputChange}
-                  rows={3} /* Reduzido para melhor encaixe no card quadrado/compacto */
-                />
-              ) : (
-                <p className="profile-bio">{profileData.bio || "Nenhuma biografia adicionada."}</p>
-              )}
-            </div>
-          </div> {/* Fim do .profile-fields-scroll-container */}
+    {/* Tipo de conta */}
+    <div className="profile-field">
+      <label htmlFor="userType"><FaUserTag className="field-icon" /> Tipo de conta:</label>
+      {isEditing ? (
+        <select
+          id="userType"
+          name="userType"
+          value={tempProfileData.userType}
+          onChange={handleInputChange}
+          required
+        >
+          {Object.entries(userTypeLabels).map(([value, label]) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
+      ) : (
+        <span>{userTypeLabels[profileData.userType]}</span>
+      )}
+    </div>
+  </div>
 
-          <div className="profile-actions">
-            {isEditing ? (
-              <>
-                <button type="submit" className="profile-button save-button">
-                  <FaSave /> Salvar Alterações
-                </button>
-                <button type="button" onClick={handleCancel} className="profile-button cancel-button">
-                  <FaTimes /> Cancelar
-                </button>
-              </>
-            ) : (
-              <button type="button" onClick={handleEdit} className="profile-button edit-button">
-                <FaEdit /> Editar Perfil
-              </button>
-            )}
-          </div>
-        </form>
+  {/* Botões de ação: FICAM DENTRO DO FORM */}
+  <div className="profile-actions">
+    {isEditing ? (
+      <>
+        <button type="submit" className="profile-button save-button">
+          <FaSave /> Salvar Alterações
+        </button>
+        <button type="button" onClick={handleCancel} className="profile-button cancel-button">
+          <FaTimes /> Cancelar
+        </button>
+      </>
+    ) : (
+      <button type="button" onClick={handleEdit} className="profile-button edit-button">
+        <FaEdit /> Editar Perfil
+      </button>
+    )}
+  </div>
+</form>
       </main>
     </div>
   );

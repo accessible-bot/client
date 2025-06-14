@@ -1,16 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './pages/login/Login';
-import Cadastro from './pages/register/Cadastro';
-import Home from './pages/info/Info';
-import Chat from './pages/chat/Chat';
-import PrivateRoute from './components/PrivateRoute';
-import Tutorial from './pages/tutorial/Tutorial';
-//import HistoricoPage from './pages/HistoricoPage';
-import Profile from './pages/profile/Profile';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/login/Login";
+import Cadastro from "./pages/register/Cadastro";
+import Home from "./pages/info/Info";
+import Chat from "./pages/chat/Chat";
+import PrivateRoute from "./components/PrivateRoute";
+import Tutorial from "./pages/tutorial/Tutorial";
+import Profile from "./pages/profile/Profile";
 
 function NotFound() {
   return (
-    <div style={{ padding: '2rem', textAlign: 'center' }}>
+    <div style={{ padding: "2rem", textAlign: "center" }}>
       <h1>404</h1>
       <p>Página não encontrada.</p>
     </div>
@@ -24,24 +23,29 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/404" element={<NotFound />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/perfil" element={<Profile />} />
-        <Route path="/tutorial" element={<Tutorial/>} />
-{/* 
-        <Route
-  path="/historico"
-  element={
-    <PrivateRoute>
-      <HistoricoPage />
-    </PrivateRoute>
-  }
-/> */}
+        <Route path="/tutorial" element={<Tutorial />} />
 
         <Route
           path="/home"
           element={
             <PrivateRoute>
               <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/chat"
+          element={
+            <PrivateRoute>
+              <Chat />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/perfil"
+          element={
+            <PrivateRoute>
+              <Profile />
             </PrivateRoute>
           }
         />
