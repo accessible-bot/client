@@ -6,6 +6,7 @@ import Chat from "./pages/chat/Chat";
 import PrivateRoute from "./components/PrivateRoute";
 import Tutorial from "./pages/tutorial/Tutorial";
 import Profile from "./pages/profile/Profile";
+import ChangePasswordForm from "./components/ChangePasswordForm";
 
 function NotFound() {
   return (
@@ -22,8 +23,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
-        <Route path="/404" element={<NotFound />} />
         <Route path="/tutorial" element={<Tutorial />} />
+        <Route path="/alterar-senha" element={<ChangePasswordForm />} />
+        <Route path="/404" element={<NotFound />} />
 
         <Route
           path="/home"
