@@ -203,11 +203,6 @@ body {
     border-bottom-right-radius: 5px;
 }
 
-.chat-bubble.autbot p.message-text {
-  white-space: pre-wrap; 
-}
-
-
 .message-text {
     margin: 0;
     padding: 0;

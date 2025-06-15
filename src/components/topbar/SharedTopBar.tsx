@@ -4,9 +4,9 @@ import { FaUserCircle, FaArrowLeft } from 'react-icons/fa';
 
 interface SharedTopBarProps {
   pageType: 'login' | 'register' | 'chat' | 'tutorial' | 'profile';
-  onShowChatView?: () => void;    
-  onShowHistoryView?: () => void; 
-  isHistoryViewActive?: boolean;  
+  onShowChatView?: () => void;    // Específico para a página de Chat
+  onShowHistoryView?: () => void; // Específico para a página de Chat
+  isHistoryViewActive?: boolean;  // Indica se a visualização de histórico está ativa no chat
 }
 
 const SharedTopBar = ({ pageType, onShowChatView, onShowHistoryView, isHistoryViewActive }: SharedTopBarProps) => {
@@ -14,11 +14,11 @@ const SharedTopBar = ({ pageType, onShowChatView, onShowHistoryView, isHistoryVi
 
   const handleAutBotClick = () => {
     if (pageType === 'chat' && onShowChatView) {
-      onShowChatView(); 
-    } else if (pageType === 'tutorial') { 
-      navigate('/'); 
+      onShowChatView(); // Volta para a visualização principal do chat
+    } else if (pageType === 'tutorial' || pageType === 'profile') { // Volta para a visualização principal do histórico
+      navigate('/'); // Leva para a página de chat
     } else {
-      navigate('/'); 
+      navigate('/'); // Comportamento padrão para login/register (vai para a home/login)
     }
   };
 

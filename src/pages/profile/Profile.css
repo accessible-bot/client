@@ -1,18 +1,21 @@
 /* Geral */
 .profile-page-container {
   display: flex;
-  flex-direction: column; /* Empilha SharedTopBar e profile-content */
+  flex-direction: column; /* Organiza SharedTopBar e profile-content verticalmente */
   min-height: 100vh;
-  background-color: #f0f2f5; /* Cor de fundo suave para a página */
+  background-color: #ffffff;
 }
 
+/* O .profile-content é o container que deve crescer e centralizar o card */
 .profile-content {
-  flex-grow: 1; /* Ocupa o espaço vertical restante */
+  flex-grow: 1; /* Faz com que este container ocupe o espaço vertical restante abaixo da SharedTopBar */
   display: flex;
-  align-items: center; /* Centraliza o card verticalmente */
-  justify-content: center; /* Centraliza o card horizontalmente */
-  padding: 20px; /* Espaçamento ao redor do card */
+  /* justify-content: center !important; /* Removido para delegar centralização horizontal ao card */
+  align-items: center !important;    /* FORÇA a centralização vertical do card dentro deste container */
+  width: 100% !important; /* FORÇA que o container tente ocupar a largura total do pai */
+  padding: 20px;
   box-sizing: border-box;
+  overflow: auto; /* Permite rolagem se o card for maior que o espaço disponível */
 }
 
 /* Card de Perfil */
@@ -20,15 +23,16 @@
   background-color: #ffffff; /* Fundo branco para o card */
   border-radius: 20px; /* Bordas mais arredondadas */
   
-  /* Largura responsiva com mínimo, valor preferencial (baseado na viewport) e máximo */
+  /* Largura responsiva com mínimo, valor preferencial e máximo */
   width: clamp(320px, 50vw, 500px); 
-  aspect-ratio: 1 / 1;
-
+  margin-left: 400px !important; /* Calculado para tela de 1920px de largura */
+   margin-right: 400px !important;/* Calculado para tela de 1920px de largura */
+  /* aspect-ratio: 1 / 1; /* Removido para flexibilidade de altura, ou defina um min-height */
+  min-height: 400px; /* Exemplo de altura mínima, ajuste conforme necessário */
   padding: 20px; /* Padding interno do card */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Sombra suave e moderna */
   border: 1px solid #e0e0e0; /* Borda sutil */
   box-sizing: border-box;
-
   display: flex;
   flex-direction: column; /* Organiza os filhos (header, fields-container, actions) verticalmente */
   overflow: hidden; /* Essencial para o container de rolagem interno funcionar corretamente */
@@ -189,6 +193,8 @@
 @media (max-width: 1024px) { /* Telas menores de desktop/tablets maiores */
   .profile-card {
     width: clamp(320px, 60vw, 450px); 
+    margin-left: 206px !important; /* 1024px * (165/820) */
+    margin-right: 206px !important;
   }
 }
 
@@ -196,9 +202,12 @@
   .profile-content { padding: 15px; }
   .profile-card {
     width: clamp(300px, 80vw, 400px);
+    margin-left: 155px !important; /* 768px * (165/820) */
+    margin-right: 155px !important;
     padding: 15px;
     /* aspect-ratio: auto; */ /* Opcionalmente, relaxar restrição quadrada */
     /* min-height: 400px; */ /* Ou definir min-height se aspect-ratio for removido */
+
   }
   .profile-header h2 { font-size: 1.4em; }
   .profile-field label, .profile-field span, .profile-field .profile-bio,
@@ -209,12 +218,15 @@
 }
 
 @media (max-width: 480px) { /* Celulares */
-  .profile-content { padding: 10px; align-items: flex-start; /* Card no topo */ }
+  .profile-content { 
+    padding: 10px; 
+    /* A centralização vertical e horizontal é herdada das regras base do .profile-content */
+  }
   .profile-card {
     width: 100%; 
     max-width: none;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     border-radius: 10px;
     aspect-ratio: auto; /* Sem restrição quadrada */
     /* min-height: calc(100vh - 20px - 70px); */ /* Ajustar conforme necessário */
@@ -222,4 +234,22 @@
   .profile-header h2 { font-size: 1.3em; }
   .profile-fields-scroll-container { padding: 5px 10px 5px 5px; margin-right: -5px; }
   .profile-fields-scroll-container::-webkit-scrollbar { width: 5px; }
+}
+
+/* Margens específicas para resoluções solicitadas */
+
+/* Para tela de 820px de largura */
+@media (min-width: 819px) and (max-width: 821px) {
+  .profile-card {
+    margin-left: 165px !important;
+    margin-right: 165px !important;
+  }
+}
+
+/* Para tela de 1159px de largura (aproximadamente) */
+@media (min-width: 1158px) and (max-width: 1160px) {
+  .profile-card {
+    margin-left: 233px !important; /* 1159px * (165/820) */
+    margin-right: 233px !important;
+  }
 }

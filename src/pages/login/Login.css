@@ -30,7 +30,7 @@ body {
 .main-login {
 
     min-width: 100vw;
-    height:90vh;
+    height:100vh;
     display: flex;
     flex-direction: row;
     justify-items: center;

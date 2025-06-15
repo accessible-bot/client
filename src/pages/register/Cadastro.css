@@ -29,7 +29,7 @@ body {
 .main-cadastro {
     min-width: 100vw;
     width: 100%;
-    min-height: 90vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -88,7 +88,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .textfield > label {
@@ -124,66 +124,27 @@ body {
     cursor: pointer;
 }
 
-.textfield > select {
-    width: 100%;
-    border: none;
-    border-radius: 10px;
-    padding: 15px;
-    background: rgb(238, 238, 238);
-    color: #2c3e50;
-    font-size: 12px;
-    outline: none;
-    box-sizing: border-box;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg fill='%232c3e50' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px 16px;
-}
-
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    gap: 10px;
-}
-
-.checkbox-container input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: #181d54;
-    cursor: pointer;
-}
-
-.checkbox-container label {
-    color: #2c3e50;
-    font-size: 0.9em;
-    cursor: pointer;
-    line-height: 1.4;
-}
-
+/* Tablet e celulares maiores */
 @media (max-width: 768px) {
     .main-cadastro {
         flex-direction: column;
-        padding: 20px; 
-        padding-top: 90px; 
-        align-items: center; 
+        padding: 20px; /* Padding geral reduzido */
+        padding-top: 90px; /* 70px (top-bar) + 20px (novo padding superior) */
+        align-items: center; /* Centraliza os blocos quando em coluna */
     }
 
     .left-cadastro, .right-cadastro {
         flex: none;
         width: 100%;
-        max-width: 500px; 
+        max-width: 500px; /* Limita a largura para melhor leitura */
         height: auto;
-        padding: 15px 0; 
+        padding: 15px 0; /* Ajusta padding vertical */
     }
 
     .card-cadastro {
         width: 90%;
         max-width: 400px;
-        margin-top: 20px; 
+        margin-top: 20px; /* Espaçamento do conteúdo acima */
     }
 
     .left-cadastro img {
@@ -192,15 +153,15 @@ body {
 
     .left-cadastro > h1 {
         font-size: 1.8em;
-        margin-top: 0;
+        margin-top: 0; /* Padding do .left-cadastro já cria espaço */
     }
 
     .top-bar {
-        padding: 0 15px; 
+        padding: 0 15px; /* Reduz padding do cabeçalho */
     }
 
     .top-bar img {
-        height: 35px; 
+        height: 35px; /* Logo um pouco menor */
     }
 
     .botao-inicio {
@@ -212,46 +173,48 @@ body {
     }
 }
 
+/* Celulares menores */
 @media (max-width: 480px) {
     .main-cadastro {
         padding-left: 10px;
         padding-right: 10px;
-        padding-bottom: 20px; 
-        padding-top: 80px; 
+        padding-bottom: 20px; /* Mais espaço no final para scroll */
+        padding-top: 80px; /* 70px (top-bar) + 10px */
     }
 
     .left-cadastro {
-        padding: 10px 0;
+        padding: 10px 0; /* Reduz padding vertical */
     }
 
     .left-cadastro > h1 {
-        font-size: 1.3em; 
+        font-size: 1.3em; /* Reduzir mais o tamanho da fonte */
         margin-bottom: 15px;
     }
 
     .left-cadastro img {
-        max-width: 180px; 
+        max-width: 180px; /* Imagem ilustrativa menor */
     }
 
     .card-cadastro {
-        width: 95%;
-        padding: 15px 10px; 
-        margin-top: 10px; 
-        margin-bottom: 20px; 
-        max-height: 420px;
+        width: 95%; /* Ocupa mais da largura disponível */
+        padding: 15px 10px; /* Reduzir padding interno do card */
+        margin-top: 10px; /* Menor margem superior */
+        margin-bottom: 20px; /* Adiciona margem inferior para melhor visualização com scroll */
+        max-height: 420px; /* Altura máxima ajustada para telas menores */
+        /* overflow-y: auto; será herdado, mas pode ser explícito se necessário */
     }
 
     .card-cadastro > h1 {
-        font-size: 1.4em;
+        font-size: 1.4em; /* Reduzir título do card */
         margin-bottom: 15px;
     }
 
     .textfield {
-        margin-bottom: 12px; 
+        margin-bottom: 12px; /* Um pouco mais de espaço entre os campos */
     }
 
     .textfield > input {
-        padding: 10px;
+        padding: 10px; /* Menor padding nos inputs */
         font-size: 0.9em;
     }
     
@@ -259,11 +222,11 @@ body {
         padding: 10px 0;
         font-size: 0.85em;
         margin-top: 15px;
-        margin-bottom: 20px; 
+        margin-bottom: 10px; /* Ajustar margem inferior do botão */
     }
 
     .top-bar img {
-        max-height: 28px; 
+        max-height: 28px; /* Logo ainda menor para não espremer */
     }
     .botao-inicio {
         font-size: 16px;
@@ -275,8 +238,8 @@ body {
 
 .error-message {
     color: red;
-    font-size: 0.875em; 
+    font-size: 0.875em; /* 14px se a base for 16px, ou ajuste conforme necessário */
     font-weight: bold;
-    margin-top: 2px;
-    line-height: 1.3; 
+    margin-top: 5px;
+    line-height: 1.3; /* Melhora a legibilidade do texto do erro */
 }
