@@ -1,13 +1,13 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+// Profile.tsx
+import { useEffect, useState, type ChangeEvent, type FormEvent, type MouseEvent } from 'react';
 import SharedTopBar from '../../components/topbar/SharedTopBar';
 import './profile.css';
-import { FaUserCircle, FaEnvelope, FaInfoCircle, FaEdit, FaSave, FaTimes, FaKey, FaSignOutAlt, FaUserTag } from 'react-icons/fa';
+import { FaUserCircle, FaEnvelope, FaEdit, FaSave, FaTimes, FaUserTag } from 'react-icons/fa';
+import { fetchUserData, updateUserData } from "../../service/User"
 
 interface UserProfile {
   name: string;
   email: string;
-  bio: string;
   userType: string;
 }
 
@@ -21,26 +21,7 @@ const userTypeLabels: Record<string, string> = {
   USUARIO: "Usuário Geral",
 };
 
-const fetchUserData = async (userId: string): Promise<UserProfile | null> => {
-  try {
-    const token = localStorage.getItem('authToken');
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
-      headers: {
-        'Authorization': token ? `Bearer ${token}` : '',
-        'Content-Type': 'application/json'
-      }
-    });
-    if (!response.ok) throw new Error("Erro ao carregar usuário");
-    return await response.json();
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
-
-
 const Profile = () => {
-  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState<UserProfile | null>(null);
   const [tempProfileData, setTempProfileData] = useState<UserProfile | null>(null);
@@ -49,6 +30,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!userId) return;
+
     const loadUserData = async () => {
       const data = await fetchUserData(userId);
       if (data) {
@@ -56,35 +38,42 @@ const Profile = () => {
         setTempProfileData(data);
       }
     };
+
     loadUserData();
   }, [userId]);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setTempProfileData(prev => prev ? { ...prev, [name]: value } : null);
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
+  const handleEdit = (e: MouseEvent) => {
+    e.preventDefault();
+    if (profileData) {
+      setTempProfileData(profileData);
+      setIsEditing(true);
+    }
   };
 
-  const handleSave = (e: FormEvent) => {
+  const handleSave = async (e: FormEvent) => {
     e.preventDefault();
-    setProfileData(tempProfileData);
-    setIsEditing(false);
+    if (!userId || !tempProfileData) return;
+
+    const updated = await updateUserData(userId, {
+      name: tempProfileData.name,
+      email: tempProfileData.email,
+      userType: tempProfileData.userType,
+    });
+
+    if (updated) {
+      setProfileData(updated);
+      setIsEditing(false);
+    }
   };
 
   const handleCancel = () => {
     setTempProfileData(profileData);
     setIsEditing(false);
-  };
-
-  const handleLogout = () => {
-    const confirmLogout = window.confirm("Tem certeza que deseja sair?");
-    if (confirmLogout) {
-      localStorage.removeItem('authToken');
-      navigate('/');
-    }
   };
 
   if (!profileData || !tempProfileData) {
@@ -151,21 +140,6 @@ const Profile = () => {
                 <span>{userTypeLabels[profileData.userType]}</span>
               )}
             </div>
-
-            <div className="profile-field">
-              <label htmlFor="bio"><FaInfoCircle className="field-icon" /> Biografia:</label>
-              {isEditing ? (
-                <textarea
-                  id="bio"
-                  name="bio"
-                  value={tempProfileData.bio}
-                  onChange={handleInputChange}
-                  rows={3}
-                />
-              ) : (
-                <p className="profile-bio">{profileData.bio || "Nenhuma biografia adicionada."}</p>
-              )}
-            </div>
           </div>
 
           <div className="profile-actions">
@@ -179,26 +153,11 @@ const Profile = () => {
                 </button>
               </>
             ) : (
-              <>
-                <button type="button" onClick={handleEdit} className="profile-button edit-button">
-                  <FaEdit /> Editar Perfil
-                </button>
-                <Link to="/alterar-senha">
-                  <button type="button" className="profile-button change-password-button">
-                    <FaKey /> Alterar Senha
-                  </button>
-                </Link>
-              </>
+              <button type="button" onClick={handleEdit} className="profile-button edit-button">
+                <FaEdit /> Editar Perfil
+              </button>
             )}
           </div>
-
-          {!isEditing && (
-            <div className="logout-section">
-              <button type="button" onClick={handleLogout} className="profile-button logout-button">
-                <FaSignOutAlt /> Sair da Conta
-              </button>
-            </div>
-          )}
         </form>
       </main>
     </div>

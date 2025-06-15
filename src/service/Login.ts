@@ -7,16 +7,8 @@ interface LoginData {
   password: string;
 }
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
 interface LoginResponse {
   token: string;
-  user: User;
-  message: string;
 }
 
 export async function loginUser(data: LoginData): Promise<LoginResponse> {
