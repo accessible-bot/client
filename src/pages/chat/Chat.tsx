@@ -167,19 +167,20 @@ const Chat = () => {
 
     setActiveChatMessages((prev) => [...prev, userMessage]);
     setCurrentMessage("");
-
+    
     const messagePayload = {
       userId,
       pergunta: userMessage.text,
       publico: userType,
     };
-
+    
     console.log("Enviando mensagem:", messagePayload);
-
+    
     socketRef.current.send(JSON.stringify(messagePayload));
-
+    
     setIsTyping(true);
     setBotStreamingMessage("");
+    
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -334,6 +335,7 @@ const Chat = () => {
                     value={currentMessage}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
+                    disabled={isTyping}
                   />
                   <button
                     type="button"
@@ -341,8 +343,13 @@ const Chat = () => {
                     onClick={handleSendMessage}
                     title="Enviar mensagem"
                     aria-label="Enviar mensagem"
+                    disabled={isTyping || currentMessage.trim() === ""}
                   >
-                    <FaPaperPlane />
+                    {isTyping ? (
+                      <div className="loading-spinner" />
+                    ) : (
+                      <FaPaperPlane />
+                    )}
                   </button>
                 </div>
               </>
