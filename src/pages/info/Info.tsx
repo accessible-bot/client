@@ -1,83 +1,44 @@
-import { useNavigate } from "react-router-dom";
+import SharedTopBar from "../../components/topbar/SharedTopBar";
+import "./Info.css";
 
-const Home = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    navigate("/");
-  };
-
+const Info = () => {
   return (
-    <div style={{ fontFamily: "'Varela Round', sans-serif" }}>
-      <div style={{
-        width: "100%",
-        height: "70px",
-        backgroundColor: "#b6d9ec",
-        position: "fixed",
-        top: "0",
-        left: "0",
-        zIndex: 1000,
-        display: "flex",
-        alignItems: "center",
-        paddingLeft: "70px"
-      }}>
-        <img src="AutBot_Logo.png" alt="Logo" style={{ width: "3%", marginLeft: "70px" }} />
-        <button style={{
-          fontSize: "20px",
-          fontWeight: "500",
-          color: "#181d54",
-          background: "transparent",
-          border: "none",
-          padding: "0",
-          marginLeft: "5px",
-          cursor: "pointer"
-        }}>Início</button>
-        <button style={{
-          fontSize: "15px",
-          color: "#181d54",
-          background: "transparent",
-          border: "none",
-          marginLeft: "725px",
-          cursor: "pointer"
-        }}>Sobre</button>
-        <button
-          onClick={handleLogout}
-          style={{
-            fontSize: "15px",
-            color: "#181d54",
-            background: "transparent",
-            border: "none",
-            marginLeft: "100px",
-            cursor: "pointer"
-          }}
-        >
-          Sair
-        </button>
-      </div>
+    <div className="info-container">
+      <SharedTopBar pageType="info" />
 
-      <div style={{
-        textAlign: "center",
-        padding: "40px",
-        color: "#181d54",
-        paddingTop: "80px"
-      }}>
-        <h1 style={{
-          fontSize: "2.5rem",
-          marginBottom: "20px"
-        }}>Bem-vindo(a) ao AutBot!</h1>
-        <p style={{
-          fontSize: "1.2rem",
-          marginBottom: "30px"
-        }}>Escolha uma opção no menu para começar.</p>
-        <img src="AutBot_Image.png" alt="Imagem ilustrativa do AutBot" style={{
-          maxWidth: "300px",
-          width: "100%",
-          height: "auto"
-        }} />
-      </div>
+      <main className="info-main">
+        <div className="info-body">
+
+          <div className="info-image-wrapper">
+            <img
+              src="/src/assets/Sobre_Autobot.png"
+              alt="Imagem sobre o AutBot"
+              className="info-image"
+            />
+          </div>
+
+          <div className="info-card">
+            <h2><strong>Sobre o AutBot</strong></h2>
+            <p>
+              AutBot é um chatbot pensado para apoiar pessoas que convivem com o
+              Transtorno do Espectro Autista (TEA). Criamos esse espaço
+              acessível e acolhedor para que familiares, educadores, colegas de
+              trabalho e interessados possam tirar dúvidas e encontrar
+              informações claras e confiáveis sobre o autismo. Com base em
+              documentos oficiais, guias educacionais e legislações, o AutBot
+              oferece respostas sobre temas do dia a dia relacionados ao TEA,
+              promovendo mais compreensão, empatia e autonomia. Nosso objetivo é
+              facilitar o acesso à informação de forma respeitosa, segura e
+              acessível — tudo isso por meio de uma conversa simples com o
+              chatbot.
+            </p>
+            <a href="#">Clique aqui para saber como usar o chatbot!</a>
+          </div>
+
+        </div>
+      </main>
     </div>
   );
 };
 
-export default Home;
+export default Info;

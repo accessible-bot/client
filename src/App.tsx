@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/login/Login";
-import Cadastro from "./pages/register/Cadastro";
-import Home from "./pages/info/Info";
+import Register from "./pages/register/Register";
+import Info from "./pages/info/Info";
 import Chat from "./pages/chat/Chat";
 import PrivateRoute from "./components/PrivateRoute";
 import Tutorial from "./pages/tutorial/Tutorial";
 import Profile from "./pages/profile/Profile";
-import ChangePasswordForm from "./components/ChangePasswordForm";
+import ResetPassword from "./pages/password/ResetPassword"; 
+import ForgotPassword from "./pages/password/ForgotPassword";
 
 function NotFound() {
   return (
@@ -22,19 +23,13 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/cadastro" element={<Register />} />
         <Route path="/tutorial" element={<Tutorial />} />
-        <Route path="/alterar-senha" element={<ChangePasswordForm />} />
+        <Route path="/recuperar-senha" element={<ForgotPassword />} />
+        <Route path="/sobre" element={<Info />} />
         <Route path="/404" element={<NotFound />} />
+        <Route path="/alterar-senha/:token" element={<ResetPassword />} />
 
-        <Route
-          path="/home"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
         <Route
           path="/chat"
           element={

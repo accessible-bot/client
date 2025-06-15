@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Cadastro.css";
+import "./Register.css";
 import SharedTopBar from "../../components/topbar/SharedTopBar";
 import { Modal } from "../../components/modal/Modal";
 
-const Cadastro = () => {
+const Register = () => {
   const navigate = useNavigate();
 
   const [userName, setUsername] = useState("");
@@ -244,10 +244,9 @@ const Cadastro = () => {
         </form>
       </main>
 
-      {/* Usando o Modal importado */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 };
 
-export default Cadastro;
+export default Register;
