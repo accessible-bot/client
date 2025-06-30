@@ -1,5 +1,6 @@
 import SharedTopBar from "../../components/topbar/SharedTopBar";
 import "./Info.css";
+import AutbotImage from '../../assets/Autbot_Image.png';
 
 const Info = () => {
   return (
@@ -11,7 +12,7 @@ const Info = () => {
 
           <div className="info-image-wrapper">
             <img
-              src="/src/assets/Sobre_Autobot.png"
+              src={AutbotImage}
               alt="Imagem sobre o AutBot"
               className="info-image"
             />

@@ -41,6 +41,8 @@ const Chat = () => {
 
   const socketRef = useRef<WebSocket | null>(null);
 
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
   const authToken = localStorage.getItem("authToken") ?? "";
   const userId = localStorage.getItem("id") ?? "";
 
@@ -60,6 +62,14 @@ const Chat = () => {
         console.error("Erro ao buscar dados do usuário:", err);
       });
   }, [userId]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [activeChatMessages, botStreamingMessage]);
 
   const connectWebSocket = () => {
     if (!authToken) {
@@ -92,21 +102,24 @@ const Chat = () => {
           setBotStreamingMessage((prev) => prev + data.content);
           setIsTyping(true);
         } else if (data.type === "complete") {
-          const fullMessage = botStreamingMessage + (data.content || "");
+          const contentWithoutStars = (botStreamingMessage + (data.content || "")).replace(/\*\*/g, "");
+
           const botMessage: ActiveConversationMessage = {
             id: Date.now().toString(),
             author: "autbot",
-            text: fullMessage,
+            text: contentWithoutStars,
             timestamp: new Date().toISOString(),
           };
           setActiveChatMessages((prev) => [...prev, botMessage]);
           setBotStreamingMessage("");
           setIsTyping(false);
         } else if (data.role === "assistant" && data.content) {
+          const contentWithoutStars = data.content.replace(/\*\*/g, "");
+
           const botMessage: ActiveConversationMessage = {
             id: Date.now().toString(),
             author: "autbot",
-            text: data.content,
+            text: contentWithoutStars,
             timestamp: new Date().toISOString(),
           };
           setActiveChatMessages((prev) => [...prev, botMessage]);
@@ -167,20 +180,19 @@ const Chat = () => {
 
     setActiveChatMessages((prev) => [...prev, userMessage]);
     setCurrentMessage("");
-    
+
     const messagePayload = {
       userId,
       pergunta: userMessage.text,
       publico: userType,
     };
-    
+
     console.log("Enviando mensagem:", messagePayload);
-    
+
     socketRef.current.send(JSON.stringify(messagePayload));
-    
+
     setIsTyping(true);
     setBotStreamingMessage("");
-    
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -324,6 +336,8 @@ const Chat = () => {
                       )}
 
                       {isTyping && !botStreamingMessage && <TypingIndicator />}
+
+                      <div ref={messagesEndRef} />
                     </>
                   )}
                 </div>

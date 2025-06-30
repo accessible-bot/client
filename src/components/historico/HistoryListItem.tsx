@@ -1,5 +1,3 @@
-
-
 import type { ConversationHistory } from '../../hooks/useHistoryData'; 
 
 interface HistoryListItemProps {
