@@ -21,6 +21,9 @@ const Login = () => {
       const response = await loginUser({ email: userName, password });
 
       localStorage.setItem("authToken", response.token);
+      localStorage.setItem("userId", response.user.id);
+      localStorage.setItem("id", response.user.id);
+
       navigate("/chat");
     } catch (error) {
       console.error("Erro ao realizar login:", error);
